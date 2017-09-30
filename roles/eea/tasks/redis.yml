@@ -1,0 +1,17 @@
+---
+- name: create redis directory
+  file: path=/usr/local/redis state=directory mode=755
+
+- name: download redis package
+  get_url:
+     url: http://download.redis.io/releases/redis-3.2.6.tar.gz
+     dest: /usr/local/redis/redis-3.2.6.tar.gz
+  environment:
+    http_proxy: http://10.175.250.81:8080
+
+- name: uncompress the file
+  command: tar zxf redis-3.2.6.tar.gz chdir=/usr/local/redis/
+
+- name: make install
+  command: make install chdir=/usr/local/redis/redis-3.2.6
+

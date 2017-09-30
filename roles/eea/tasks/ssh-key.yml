@@ -1,0 +1,27 @@
+---
+#- name: Generate SSH keys
+  #shell: ssh-keygen -t rsa -f /root/.ssh/id_rsa -P ''
+  #args:
+    #creates: /root/.ssh/id_rsa
+#
+#- name: fetch pub key from servers
+  #fetch:
+    #src: /root/.ssh/id_rsa.pub
+    #dest: /home/ubuntu/ansible/fetch_files
+
+- name: Set authorized key took from file
+#  vars:
+#    pubkey_path: /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-
+  authorized_key:
+    user: root
+    state: present
+    #key: "{{ lookup('file', '{{ item }}') }}"
+    key: '{{ item }}'
+  with_file:
+      - /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-1/root/.ssh/id_rsa.pub
+      - /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-2/root/.ssh/id_rsa.pub
+      - /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-3/root/.ssh/id_rsa.pub
+      - /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-4/root/.ssh/id_rsa.pub
+      - /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-5/root/.ssh/id_rsa.pub
+      - /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-6/root/.ssh/id_rsa.pub
+      - /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-7/root/.ssh/id_rsa.pub

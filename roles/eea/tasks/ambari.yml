@@ -1,0 +1,31 @@
+---
+#- name: install pip package
+#  apt: name=python-pip state=present update_cache=yes
+    
+#- name: install pexpect via pip
+#  pip: name=pexpect
+
+- name: download apt list
+  get_url:
+     url: http://public-repo-1.hortonworks.com/ambari/ubuntu14/2.x/updates/2.4.2.0/ambari.list
+     dest: /etc/apt/sources.list.d/ambari.list
+
+- name: Add repository key
+  apt_key: keyserver=keyserver.ubuntu.com id=B9733A7A07513CAD state=present
+
+- name: apt update cache and Install ambari-server package
+  apt:
+    update_cache: yes
+    name: ambari-server
+    state: present
+
+- name: ambari-server setup via expect
+  expect:
+    command: /usr/sbin/ambari-server setup
+    responses:
+      'Customize user account for ambari-server daemon \[y/n\] \(n\)\?': 'n'
+      'Enter choice \(1\):': '1'
+      'Do you accept the Oracle Binary Code License Agreement \[y/n\] \(y\)\?': 'y'
+      'Enter advanced database configuration \[y/n\] \(n\)\?': 'n'
+    echo: yes
+

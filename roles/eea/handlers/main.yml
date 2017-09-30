@@ -1,0 +1,8 @@
+---
+# handlers file for eea
+- name: restart ntp service
+  service: name=ntp state=restarted
+
+- name: nfs server start
+  service: name=nfs-kernel-server  state=started
+

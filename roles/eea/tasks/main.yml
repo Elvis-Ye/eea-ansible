@@ -1,0 +1,37 @@
+---
+# tasks file for eea
+- name: Change limit.conf file
+  lineinfile:
+      dest: /etc/security/limits.conf
+      state: present
+      line: '{{ item }}'
+  with_items:
+     - '*               soft   nofile            65535'
+     - '*               hard   nofile            65535'
+
+- include: network-pre.yml
+  tags: network-pre
+
+- include: dns.yml
+  tags: dns
+
+- include: ntp.yml
+  tags: install_ntp
+
+- include: ssh-key.yml
+  tags: gen-ssh-key
+
+- include: traceroute.yml
+  tags: traceroute
+
+- include: pip.yml
+  tags: pip
+
+- include: spark-lib.yml
+  tags: spark-lib
+
+- include: nfs-server.yml
+  tags: nfs-server
+
+- include: nfs-client.yml
+  tags: nfs-client

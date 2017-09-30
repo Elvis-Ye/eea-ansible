@@ -1,0 +1,25 @@
+---
+#- name: remove lock file
+#  file:
+#    path: "{{ item }}"
+#    state: absent
+#  with_items:
+#    - /var/lib/dpkg/lock
+#    - /var/cache/apt/archives/lock
+
+#- name: apt install pip
+#  apt: 
+#    name: "{{ item }}"
+#    state: present
+#  with_items:
+#    - python-psycopg2
+#    - python-pip
+
+- name: copy pip-txt file
+  copy: src=pip_req.txt dest=/tmp/pip_req.txt
+
+- name: pip install
+  pip: requirements=/tmp/pip_req.txt 
+  environment:
+    http_proxy: http://10.175.250.81:8080
+    https_proxy: http://10.175.250.81:8080

@@ -1,0 +1,28 @@
+---
+- name: copy environment for system level proxy setting
+  copy: src=environment dest=/etc/environment mode=644
+    
+- name: copy apt.conf for apt-get  proxy setting
+  copy: src=apt.conf.proxy dest=/etc/apt/apt.conf
+    
+- name: update routing table for default gw
+  command: "{{ item }}"
+  with_items:
+    - "route add default gw 192.168.34.125"
+    - "route del default gw 192.168.34.1"
+
+- name: update DNS client setting
+  copy: src=resolv.conf dest=/etc/resolv.conf
+
+
+- name: update /etc/hosts file with other servers
+  blockinfile:
+    path: /etc/hosts
+    block: |
+      192.168.34.37 sh-rms-eea-upgrade-7.localnova
+      192.168.34.33 sh-rms-eea-upgrade-6.localnova
+      192.168.34.30 sh-rms-eea-upgrade-5.localnova
+      192.168.34.24 sh-rms-eea-upgrade-4.localnova
+      192.168.34.27 sh-rms-eea-upgrade-3.localnova
+      192.168.34.20 sh-rms-eea-upgrade-2.localnova
+      192.168.34.17 sh-rms-eea-upgrade-1.localnova

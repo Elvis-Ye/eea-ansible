@@ -1,0 +1,39 @@
+- hosts: eea-3
+  remote_user: ubuntu
+  become: true
+  become_method: sudo
+  become_user: root
+
+  tasks:
+#    - name: create redis directory
+#      file: path=/usr/local/redis state=directory mode=755
+#
+#    - name: unarchive file
+#      unarchive: 
+#        src: http://download.redis.io/releases/redis-3.2.6.tar.gz
+#        dest: /usr/local/redis 
+#        remote_src: yes
+#      environment:
+#        http_proxy: http://10.175.250.81:8080
+
+#    - name: make install
+#      command: make install chdir=/usr/local/redis/redis-3.2.6
+    - name: change redis conf file for databases
+      lineinfile: 
+        dest: /etc/redis/6379.conf 
+        regexp: "^databases 16"
+        line: "databases 20"
+      tags: ChangeFile
+
+    - name: change redis conf protected-mode
+      lineinfile: 
+        dest: /etc/redis/6379.conf 
+        regexp: "^protected-mode yes"
+        line: "protected-mode no"
+ 
+    - name: change redis conf binding
+      lineinfile: 
+        dest: /etc/redis/6379.conf 
+        regexp: "^bind 127.0.0.1"
+        line: ""
+ 

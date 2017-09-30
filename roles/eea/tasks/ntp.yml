@@ -1,0 +1,25 @@
+---
+#- name: ntpdate local time server
+#  command: ntpdate 10.175.250.66
+
+#- name: apt update
+#  command: apt update
+#  apt: 
+#    update_cache=yes
+#    cache_valid_time=3600
+
+#- name: install ntp package
+#  command: apt install ntp -y
+#  apt: name=ntp state=present force=yes
+  #with_items:
+  #  - ntpdate 
+  #  - ntp
+  #environment: "{{ proxy_env }}"   
+    #http_proxy: http://10.175.250.81:8080
+
+- name: set timezone
+  command: timedatectl set-timezone Asia/Shanghai
+
+- name: configure ntp client
+  copy: src=ntp.conf dest=/etc/ntp.conf
+  notify: restart ntp service

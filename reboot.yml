@@ -1,0 +1,12 @@
+- hosts: eea-all
+  remote_user: ubuntu
+  become: true
+  become_method: sudo
+  become_user: root
+
+  tasks:
+  - name: Restart server
+    command: /sbin/shutdown -r +1
+    async: 0
+    poll: 0
+    ignore_errors: true
