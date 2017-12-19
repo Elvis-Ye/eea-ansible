@@ -1,30 +1,54 @@
 [eea-all]
-sh-rms-eea-upgrade-7
-sh-rms-eea-upgrade-6
-sh-rms-eea-upgrade-5
-sh-rms-eea-upgrade-4
-sh-rms-eea-upgrade-3
-sh-rms-eea-upgrade-2
-sh-rms-eea-upgrade-1
+192.168.34.91 hostname=eea1.localnova
+192.168.34.92 hostname=eea2.localnova
+192.168.34.93 hostname=eea3.localnova
 
-[nfs-client]
-sh-rms-eea-upgrade-7
-sh-rms-eea-upgrade-6
-sh-rms-eea-upgrade-5
-sh-rms-eea-upgrade-4
-sh-rms-eea-upgrade-3
-sh-rms-eea-upgrade-2
+[eea-nodes]
+192.168.34.92 hostname=eea2.localnova
+192.168.34.93 hostname=eea3.localnova
  
 [eea-master]
-sh-rms-eea-upgrade-1
-
-[eea-3]
-sh-rms-eea-upgrade-3
+192.168.34.91 hostname=eea1.localnova
 
 [eea-2]
-sh-rms-eea-upgrade-2
+192.168.34.92
 
-[eea-all:vars]
+[eea-3]
+192.168.34.93
+
+
+[roytest]
+192.168.34.43 hostname=roy1.localnova
+192.168.34.45  hostname=roy2.localnova
+192.168.34.44  hostname=roy3.localnova
+
+[postgresql_server]
+192.168.34.36 
+192.168.34.37
+
+[redis_server]
+192.168.34.31 
+
+[master1]
+192.168.34.39
+
+[nfs-server]
+192.168.34.39
+
+[nfs-client]
+192.168.34.36
+192.168.34.37
+192.168.34.38
+
+
+[roytest-2]
+192.168.34.32
+
+[roytest-3]
+192.168.34.33
+
+
+[all:vars]
 ansible_ssh_user=ubuntu
 ansible_ssh_private_key_file=/home/ubuntu/EEA
 
@@ -32,7 +56,6 @@ ansible_ssh_private_key_file=/home/ubuntu/EEA
 ansible_ssh_user=ubuntu
 ansible_ssh_private_key_file=/home/ubuntu/EEA
 
-[eea-master:vars]
 [eea-master:vars]
 ansible_ssh_user=ubuntu
 ansible_ssh_private_key_file=/home/ubuntu/EEA

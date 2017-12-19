@@ -1,0 +1,32 @@
+- hosts: localhost
+  gather_facts: False
+  remote_user: ubuntu
+#  become: true
+#  become_method: sudo
+#  become_user: root
+
+  tasks:
+#   - name: remove files
+#     file:
+#       path: "{{item}}"
+#       state: absent
+#     with_fileglob:
+#       - public_keys/*.pub
+
+   - name: Ansible delete pub file glob
+     find:
+       paths: public_keys
+       patterns: '*.pub'
+     register: files_to_delete
+     tags: find_file
+   
+   - name: Display file path
+     debug:
+       var: files_to_delete.files[0].path
+     tags: find_file
+   
+   - name: Ansible remove file glob
+     file:
+       path: "{{ item.path }}"
+       state: absent
+     with_items: "{{ files_to_delete.files }}"

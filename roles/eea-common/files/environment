@@ -1,0 +1,7 @@
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"
+http_proxy=http://10.175.250.81:8080
+https_proxy=http://10.175.250.81:8080
+ftp_proxy=http://10.175.250.81:8080
+RSYNC_PROXY=10.175.250.81:8080
+no_proxy="ericsson.se,127.0.0.1,localhost,169.144.135.53,localnova,192.168.34.91,192.168.34.92,192.168.34.93,eea1.localnova,eea2.localnova,eea3.localnova"
+

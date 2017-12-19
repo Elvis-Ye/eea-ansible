@@ -1,0 +1,41 @@
+---
+# tasks file for eea
+- include: THP.yml
+  tags: THP
+
+- include: network-pre.yml
+  tags: network-pre
+
+- include: route.yml
+  tags: route
+
+- include: dns.yml
+  tags: dns
+
+- include: limits.yml
+  tags: limits
+#  notify:
+#    - reboot hosts
+#    - wait for vm up
+
+
+- include: reboot.yml
+  tags: reboot
+
+- include: ntp.yml
+  notify: restart ntp service
+  tags: install_ntp
+
+- name: force all notified handlers after ntp configured
+  meta: flush_handlers
+
+- include: ssh-key.yml
+  tags: ssh-key
+
+
+- include: pip.yml
+  tags: pip
+
+- include: spark-lib.yml
+  tags: spark-lib
+

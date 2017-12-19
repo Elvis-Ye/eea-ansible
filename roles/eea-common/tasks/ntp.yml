@@ -1,0 +1,32 @@
+---
+- name: apt update
+#  shell: apt update && touch /tmp/.aptupdated
+#  args:
+#    creates: /tmp/.aptupdated
+  apt: 
+    update_cache=yes
+    cache_valid_time=3600
+#    force=yes
+
+- name: install ntp package
+  apt: name=ntp state=present #update_cache=yes cache_valid_time=3600 #force=yes
+  with_items:
+    - ntpdate 
+    - ntp
+  #environment: "{{ proxy_env }}"   
+    #http_proxy: http://10.175.250.81:8080
+
+- name: disable ntp service
+  service: name=ntp state=stopped
+
+- name: ntpdate local time server
+  command: ntpdate 10.175.250.66
+
+- name: set timezone
+  command: timedatectl set-timezone Asia/Dubai
+
+- name: configure ntp client
+  copy: src=ntp.conf dest=/etc/ntp.conf
+  notify: restart ntp service
+
+- meta: flush_handlers

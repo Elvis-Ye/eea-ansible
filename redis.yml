@@ -1,39 +1,73 @@
-- hosts: eea-3
+- hosts: redis_server
   remote_user: ubuntu
   become: true
   become_method: sudo
   become_user: root
 
   tasks:
-#    - name: create redis directory
-#      file: path=/usr/local/redis state=directory mode=755
-#
-#    - name: unarchive file
-#      unarchive: 
-#        src: http://download.redis.io/releases/redis-3.2.6.tar.gz
-#        dest: /usr/local/redis 
-#        remote_src: yes
-#      environment:
-#        http_proxy: http://10.175.250.81:8080
+    - name: create redis directory
+      file: path=/usr/local/redis state=directory mode=755
 
-#    - name: make install
-#      command: make install chdir=/usr/local/redis/redis-3.2.6
+    - name: create redis data directory
+      file: path=/data/redis state=directory mode=755
+
+    - name: unarchive file
+      unarchive: 
+        src: http://download.redis.io/releases/redis-3.2.6.tar.gz
+        dest: /usr/local/redis 
+        remote_src: yes
+      environment:
+        http_proxy: http://10.175.250.81:8080
+
+    - name: make install
+      command: make install chdir=/usr/local/redis/redis-3.2.6
+
+    - name: install pexpect via pip
+      pip: name=pexpect
+      environment:
+        https_proxy: http://10.175.250.81:8080
+
+    - name: install_server via expect
+      expect:
+        command: ./install_server.sh
+        chdir: /usr/local/redis/redis-3.2.6/utils
+        responses:
+          'Please select the redis port for this instance: \[6379\]': '6379'
+          'Please select the redis config file name \[/etc/redis/6379.conf\]': '/etc/redis/6379.conf'
+          'Please select the redis log file name \[/var/log/redis_6379.log\]': '/var/log/redis_6379.log'
+          'Please select the data directory for this instance \[/var/lib/redis/6379\]': '/data/redis'
+          'Please select the redis executable path \[/usr/local/bin/redis-server\]': '/usr/local/bin/redis-server'
+          'Is this ok\? Then press ENTER to go on or Ctrl\-C to abort.': 'ok'
+        echo: yes
+      register: install_step
+
+    - name: Display install step
+      debug:
+        var: install_step
+
     - name: change redis conf file for databases
       lineinfile: 
         dest: /etc/redis/6379.conf 
-        regexp: "^databases 16"
-        line: "databases 20"
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - { regexp: "^databases 16", line: "databases 20" }
+        - { regexp: "^protected-mode yes", line: "protected-mode no" }
+        - { regexp: "^bind 127.0.0.1", line: "# bind 127.0.0.1" }
       tags: ChangeFile
 
-    - name: change redis conf protected-mode
-      lineinfile: 
-        dest: /etc/redis/6379.conf 
-        regexp: "^protected-mode yes"
-        line: "protected-mode no"
+#    - name: change redis conf protected-mode
+#      lineinfile: 
+#        dest: /etc/redis/6379.conf 
+#        regexp: "^protected-mode yes"
+#        line: "protected-mode no"
+# 
+#    - name: change redis conf binding
+#      lineinfile: 
+#        dest: /etc/redis/6379.conf 
+#        regexp: "^bind 127.0.0.1"
+#        line: "# bind 127.0.0.1"
+#        #line: "bind 0.0.0.0"
  
-    - name: change redis conf binding
-      lineinfile: 
-        dest: /etc/redis/6379.conf 
-        regexp: "^bind 127.0.0.1"
-        line: ""
- 
+    - name: restart redis service
+      command: /etc/init.d/redis_6379 restart

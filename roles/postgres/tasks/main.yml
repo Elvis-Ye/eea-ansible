@@ -1,0 +1,43 @@
+---
+# tasks file for postgres
+- name: add apt key
+  apt_key: url=https://postgresql.org/media/keys/ACCC4CF8.asc state=present
+  environment:
+    https_proxy: http://10.175.250.81:8080
+
+- name: add apt repository
+  apt_repository: repo='deb https://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present update_cache='yes'
+
+- name: update apt cache
+  apt: update_cache='yes' cache_valid_time=3600
+
+- name: apt install postgres
+  apt: name='postgresql-9.4' state='present'
+
+- name: change postgre pg_hba.conf
+  template: src=pg_hba.conf.j2 dest=/etc/postgresql/9.4/main/pg_hba.conf backup=yes
+  notify: restart postgresql service
+  tags: pg_hba
+
+- name: change postgresql.conf
+  lineinfile:
+    dest: /etc/postgresql/9.4/main/postgresql.conf
+    regexp: "^#?listen_addresses"
+    line: "listen_addresses = '*'"
+    state: present
+    backup: yes
+  tags: listen_port
+  notify: restart postgresql service
+
+- name: force all notified handlers to run at this point, not waiting for normal sync points
+  meta: flush_handlers
+#- name: restart postgresql service
+  #service: name=postgresql state=restarted enabled='yes'
+
+- name: set password for postgres
+  postgresql_user:
+    db: postgres
+    user: postgres
+    password: postgres
+ 
+

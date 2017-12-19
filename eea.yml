@@ -1,4 +1,4 @@
-- hosts: eea-all
+- hosts: master1
   gather_facts: False
   remote_user: ubuntu
   become: true

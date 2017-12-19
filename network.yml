@@ -1,9 +1,0 @@
-- hosts: eea-2
-  gather_facts: False
-  remote_user: ubuntu
-  become: true
-  become_method: sudo
-  become_user: root
-
-  roles:
-    - eea

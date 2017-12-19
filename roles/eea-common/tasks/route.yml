@@ -1,0 +1,2 @@
+- name: update route table after reboot
+  copy: src=routescript dest=/etc/network/if-up.d/routescript mode=0755

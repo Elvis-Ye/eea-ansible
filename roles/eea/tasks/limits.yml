@@ -1,0 +1,15 @@
+- name: Change limit.conf file
+  lineinfile:
+      dest: /etc/security/limits.conf
+      state: present
+      line: '{{ item }}'
+  with_items:
+     - '*               soft   nofile            65535'
+     - '*               hard   nofile            65535'
+
+- name: change /etc/pam.d/su file
+  lineinfile:
+      dest: /etc/pam.d/su
+      regexp: '# session    required   pam_limits.so'
+      line: 'session    required   pam_limits.so'
+

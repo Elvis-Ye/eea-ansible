@@ -1,0 +1,9 @@
+---
+- name: Create .ssh folder
+  file: path=/root/.ssh state=directory mode=0700 owner=root group=root
+
+- name: copy private key to remote
+  copy: src=/root/.ssh/id_rsa dest=/root/.ssh/id_rsa owner=root group=root mode=600
+
+- name: copy pub key to remote
+  copy: src=/root/.ssh/id_rsa.pub dest=/root/.ssh/id_rsa.pub owner=root group=root mode=644

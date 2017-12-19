@@ -1,6 +1,6 @@
 ---
 - name: Create share dir
-  file: path=/data/eea/rms state=directory
+  file: path=/data/eea/rms state=directory mode=0777
 
 - name: Create link for eea share dir
   file: src=/data/eea/rms dest=/data/eea/RMS state=link

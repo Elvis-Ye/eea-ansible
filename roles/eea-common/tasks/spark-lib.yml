@@ -1,0 +1,10 @@
+---
+- name: create directory for spark jar
+  file: path=/usr/hdp/current/spark-client/lib state=directory
+
+- name: download spark libary
+  get_url:
+     url: https://repository.apache.org/content/repositories/releases/org/apache/spark/spark-streaming-kafka-assembly_2.10/1.6.2/spark-streaming-kafka-assembly_2.10-1.6.2.jar
+     dest: /usr/hdp/current/spark-client/lib/spark-streaming-kafka-assembly_2.10-1.6.2.jar
+  environment:
+    https_proxy: http://10.175.250.81:8080

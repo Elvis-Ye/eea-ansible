@@ -1,0 +1,40 @@
+---
+#- name: remove lock file
+#  file:
+#    path: "{{ item }}"
+#    state: absent
+#  with_items:
+#    - /var/lib/dpkg/lock
+#    - /var/cache/apt/archives/lock
+
+- name: apt install pip
+  apt: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-psycopg2
+    - python-pip
+
+- name: unarchive 3pp packages
+  unarchive:
+    src: "{{ item.src }}" 
+    dest: "{{ item.dest }}"
+    #src=dist-packages.tar.gz dest=/usr/local/lib/python2.7
+  with_items:
+    - { 'src': 'dist-packages_MS2_user.tar.gz', 'dest': '/usr/local/lib/python2.7' } 
+    - { 'src': 'dist-packages_MS2_os.tar.gz', 'dest': '/usr/lib/python2.7' } 
+  tags: 3pp
+
+- name: pip install json-tools
+  pip: name=json-tools
+  environment:
+    https_proxy: http://10.175.250.81:8080
+
+#- name: copy pip-txt file
+#  copy: src=pip_req.txt dest=/tmp/pip_req.txt
+#
+#- name: pip install
+#  pip: requirements=/tmp/pip_req.txt 
+#  environment:
+#    http_proxy: http://10.175.250.81:8080
+#    https_proxy: http://10.175.250.81:8080
