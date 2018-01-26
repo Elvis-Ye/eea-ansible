@@ -1,0 +1,32 @@
+---
+- name: create redis directory
+  file: path=/usr/java state=directory mode=755
+
+- name: unarchive java8
+  unarchive: 
+    src: http://192.168.34.77/jdk-8u162-linux-x64.tar.gz 
+    dest: /usr/java
+    remote_src: yes
+
+- name: 'copy set_java_file'
+  copy: src='set_java_file.sh' dest='/tmp' mode=0700
+  
+- name: 'set java'
+  shell: '/tmp/set_java_file.sh'
+ 
+- shell: 'java -version'
+  register: 'javav'
+
+- debug:
+   msg:'{{javav}}'
+#- name: download redis package
+#  get_url:
+#     url: http://192.168.34.77/jdk-8u162-linux-x64.tar.gz
+#     dest: /usr/java/jdk-8u162-linux-x64.tar.gz
+#
+#- name: uncompress the file
+#  command: tar zxf redis-3.2.6.tar.gz chdir=/usr/local/redis/
+#
+#- name: make install
+#  command: make install chdir=/usr/local/redis/redis-3.2.6
+

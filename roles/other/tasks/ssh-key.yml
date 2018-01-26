@@ -1,0 +1,71 @@
+---
+- name: generate ssh key for root
+  user: 
+    name=root
+    generate_ssh_key=yes
+
+- name: Get public keys for master
+  shell: cat /root/.ssh/id_rsa.pub
+  register: master_ssh_key
+
+- name: Delete pub files if existing
+  local_action:
+    module: file
+    path: "{{ item }}"
+    state: absent
+  with_fileglob:
+    - public_keys/*.pub
+
+#- name: Ansible delete pub file glob
+#  find:
+#    paths: public_keys
+#    patterns: '*.pub'
+#  register: files_to_delete
+#  connection: local
+#  tags: find_file
+#
+#- name: Display file path
+#  debug:
+#    var: files_to_delete.files.0.path
+#  tags: find_file
+#
+#- name: Ansible remove file glob
+#  file:
+#    path: "{{ item.path }}"
+#    state: absent
+#  with_items: "{{ files_to_delete.files }}"
+#  connection: local
+
+- name: Copy ssh key into file
+  local_action: copy content={{ master_ssh_key.stdout }} dest=./public_keys/{{ inventory_hostname }}.pub 
+
+- name: Add public keys for developers
+  authorized_key: user=root key={{ lookup('file', item) }}
+  with_fileglob:
+   - public_keys/*.pub
+#- name: Generate SSH keys
+  #shell: ssh-keygen -t rsa -f /root/.ssh/id_rsa -P ''
+  #args:
+    #creates: /root/.ssh/id_rsa
+#
+#- name: fetch pub key from servers
+  #fetch:
+    #src: /root/.ssh/id_rsa.pub
+    #dest: /home/ubuntu/ansible/fetch_files
+
+#- name: Set authorized key took from file
+#  vars:
+#    pubkey_path: /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-
+#  authorized_key:
+#    user: root
+#    state: present
+    #key: "{{ lookup('file', '{{ item }}') }}"
+#    key: '{{ item }}'
+#  with_file:
+#      - root_rsa.pub
+      #- /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-2/root/.ssh/id_rsa.pub
+      #- /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-3/root/.ssh/id_rsa.pub
+      #- /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-4/root/.ssh/id_rsa.pub
+      #- /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-5/root/.ssh/id_rsa.pub
+      #- /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-6/root/.ssh/id_rsa.pub
+      #- /home/ubuntu/ansible/fetch_files/sh-rms-eea-upgrade-7/root/.ssh/id_rsa.pub

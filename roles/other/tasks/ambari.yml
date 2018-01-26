@@ -1,6 +1,6 @@
 ---
-#- name: install pip package
-#  apt: name=python-pip state=present update_cache=yes
+- name: install pip package
+  apt: name=python-pip state=present update_cache=yes
     
 #- name: install pexpect via pip
 #  pip: name=pexpect
@@ -18,15 +18,14 @@
   environment:
     http_proxy: http://10.175.250.81:8080
 
-#- name: apt update cache and Install ambari-server package
-#  apt:
-#    update_cache: yes
-#    name: ambari-server
-#    state: present
+- name: apt update cache and Install ambari-server package
+  apt:
+    update_cache: yes
+    name: ambari-server
+    state: present
 
-#- name: ambari-server setup
-#  command: /usr/sbin/ambari-server setup -s
-
+- name: ambari-server setup
+  command: /usr/sbin/ambari-server setup -s
 #- name: ambari-server setup via expect
 #  expect:
 #    command: /usr/sbin/ambari-server setup

@@ -1,4 +1,4 @@
-- hosts: nfs-server
+- hosts: other
   gather_facts: False
   remote_user: ubuntu
   become: true
@@ -6,4 +6,4 @@
   become_user: root
 
   roles:
-    - eea
+    - other

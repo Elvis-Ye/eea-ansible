@@ -1,61 +1,31 @@
 [eea-all]
-192.168.34.91 hostname=eea1.localnova
-192.168.34.92 hostname=eea2.localnova
-192.168.34.93 hostname=eea3.localnova
+192.168.34.75 hostname=eea-ta1-1.localnova
+192.168.34.73 hostname=eea-ta1-2.localnova
+192.168.34.74 hostname=eea-ta1-3.localnova
 
-[eea-nodes]
-192.168.34.92 hostname=eea2.localnova
-192.168.34.93 hostname=eea3.localnova
- 
-[eea-master]
-192.168.34.91 hostname=eea1.localnova
+[postgresql_server]
+192.168.34.73 
+192.168.34.74 
 
-[eea-2]
-192.168.34.92
+[redis_server]
+192.168.34.73 
 
-[eea-3]
-192.168.34.93
+[nfs-server]
+192.168.34.75
 
+[nfs-client]
+192.168.34.73
+192.168.34.74
+
+[other]
+192.168.34.77 hostname=ambari-web.localnova
 
 [roytest]
 192.168.34.43 hostname=roy1.localnova
 192.168.34.45  hostname=roy2.localnova
 192.168.34.44  hostname=roy3.localnova
 
-[postgresql_server]
-192.168.34.36 
-192.168.34.37
-
-[redis_server]
-192.168.34.31 
-
-[master1]
-192.168.34.39
-
-[nfs-server]
-192.168.34.39
-
-[nfs-client]
-192.168.34.36
-192.168.34.37
-192.168.34.38
-
-
-[roytest-2]
-192.168.34.32
-
-[roytest-3]
-192.168.34.33
-
-
 [all:vars]
 ansible_ssh_user=ubuntu
 ansible_ssh_private_key_file=/home/ubuntu/EEA
 
-[eea-3:vars]
-ansible_ssh_user=ubuntu
-ansible_ssh_private_key_file=/home/ubuntu/EEA
-
-[eea-master:vars]
-ansible_ssh_user=ubuntu
-ansible_ssh_private_key_file=/home/ubuntu/EEA

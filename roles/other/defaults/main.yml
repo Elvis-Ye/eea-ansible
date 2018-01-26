@@ -1,0 +1,11 @@
+---
+# defaults file for eea
+hostip: [192.168.34.91,192.168.34.92,192.168.34.93]
+hostmatch:
+  - { ip: 192.168.34.91, hostname: eea1.localnova }
+  - { ip: 192.168.34.92, hostname: eea2.localnova }
+  - { ip: 192.168.34.93, hostname: eea3.localnova }
+#hostip:
+# - 192.168.34.91
+# - 192.168.34.92
+# - 192.168.34.93

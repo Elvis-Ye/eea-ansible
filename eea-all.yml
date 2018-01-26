@@ -1,4 +1,4 @@
-- hosts: roytest
+- hosts: eea-all
   gather_facts: False
   remote_user: ubuntu
   become: true

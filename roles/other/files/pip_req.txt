@@ -1,0 +1,9 @@
+simplejson==3.8.2
+pykafka==2.5.0
+redis==2.10.5
+python-kafka-logging==0.6
+happybase==1.0.0
+PyYAML==3.12
+python-dateutil==2.6.0
+spark==0.2.1
+py4j==0.10.4
