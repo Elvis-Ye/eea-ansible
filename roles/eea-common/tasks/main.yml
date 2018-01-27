@@ -6,17 +6,17 @@
 - include: network-pre.yml
   tags: network-pre
 
-- include: route.yml
-  tags: route
-
-- include: dns.yml
-  tags: dns
+#- include: route.yml
+#  tags: route
+#
+#- include: dns.yml
+#  tags: dns
 
 - include: limits.yml
   tags: limits
 
-- include: ntp.yml
-  tags: install_ntp
+#- include: ntp.yml
+#  tags: install_ntp
 
 - include: ssh-key.yml
   tags: ssh-key

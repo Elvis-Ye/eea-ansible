@@ -2,9 +2,6 @@
 - include: nfs-server.yml
   tags: nfs-server
 
-- include: java.yml
-  tags: jdk
-
 - include: ambari.yml
   tags: ambari
 

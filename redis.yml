@@ -1,5 +1,5 @@
 - hosts: redis_server
-  remote_user: ubuntu
+  remote_user: ecf-dev
   become: true
   become_method: sudo
   become_user: root
@@ -17,7 +17,7 @@
         dest: /usr/local/redis 
         remote_src: yes
       environment:
-        http_proxy: http://10.175.250.81:8080
+        http_proxy: http://10.24.16.228:3128
 
     - name: make install
       command: make install chdir=/usr/local/redis/redis-3.2.6
@@ -25,7 +25,7 @@
     - name: install pexpect via pip
       pip: name=pexpect
       environment:
-        https_proxy: http://10.175.250.81:8080
+        https_proxy: http://10.24.16.228:3128
 
     - name: install_server via expect
       expect:

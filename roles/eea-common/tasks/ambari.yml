@@ -10,13 +10,13 @@
      url: http://public-repo-1.hortonworks.com/ambari/ubuntu14/2.x/updates/2.4.2.0/ambari.list
      dest: /etc/apt/sources.list.d/ambari.list
   environment:
-    http_proxy: http://10.175.250.81:8080
+    http_proxy: http://10.24.16.228:3128
 
 
 - name: Add repository key
   apt_key: keyserver=keyserver.ubuntu.com id=B9733A7A07513CAD state=present
   environment:
-    http_proxy: http://10.175.250.81:8080
+    http_proxy: http://10.24.16.228:3128
 
 - name: apt update cache and Install ambari-server package
   apt:
@@ -36,7 +36,7 @@
 #      'Enter advanced database configuration \[y/n\] \(n\)\?': 'n'
 #    echo: yes
 #  environment:
-#    http_proxy: http://10.175.250.81:8080
+#    http_proxy: http://10.24.16.228:3128
 
 #- name: start ambari
 #  command: /usr/sbin/ambari-server start

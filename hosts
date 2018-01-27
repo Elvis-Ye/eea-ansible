@@ -1,31 +1,29 @@
 [eea-all]
-192.168.34.75 hostname=eea-ta1-1.localnova
-192.168.34.73 hostname=eea-ta1-2.localnova
-192.168.34.74 hostname=eea-ta1-3.localnova
+analytics-hdp-1
+analytics-hdp-2
+analytics-hdp-3
+analytics-hdp-4
+analytics-hdp-5
+analytics-web-1
 
 [postgresql_server]
-192.168.34.73 
-192.168.34.74 
+analytics-hdp-2
+analytics-hdp-3
 
 [redis_server]
-192.168.34.73 
+analytics-hdp-3
 
 [nfs-server]
-192.168.34.75
+analytics-hdp-1
 
 [nfs-client]
-192.168.34.73
-192.168.34.74
+analytics-hdp-2
+analytics-hdp-3
+analytics-hdp-4
+analytics-hdp-5
 
-[other]
-192.168.34.77 hostname=ambari-web.localnova
-
-[roytest]
-192.168.34.43 hostname=roy1.localnova
-192.168.34.45  hostname=roy2.localnova
-192.168.34.44  hostname=roy3.localnova
 
 [all:vars]
-ansible_ssh_user=ubuntu
-ansible_ssh_private_key_file=/home/ubuntu/EEA
+ansible_ssh_user=ecf-dev
+ansible_ssh_private_key_file=/home/ecf-dev/EEA
 

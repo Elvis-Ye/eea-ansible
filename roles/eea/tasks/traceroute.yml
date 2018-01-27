@@ -18,7 +18,7 @@
   #  - ntpdate 
   #  - ntp
   #environment: "{{ proxy_env }}"   
-    #http_proxy: http://10.175.250.81:8080
+    #http_proxy: http://10.24.16.228:3128
 
 #- name: set timezone
 #  command: timedatectl set-timezone Asia/Shanghai

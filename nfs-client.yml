@@ -1,5 +1,5 @@
 - hosts: nfs-client
-  remote_user: ubuntu
+  remote_user: ecf-dev
   become: true
   become_method: sudo
   become_user: root

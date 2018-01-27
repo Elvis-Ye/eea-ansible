@@ -4,4 +4,4 @@
      url: https://repository.apache.org/content/repositories/releases/org/apache/spark/spark-streaming-kafka-assembly_2.10/1.6.2/spark-streaming-kafka-assembly_2.10-1.6.2.jar
      dest: /usr/hdp/current/spark-client/lib/spark-streaming-kafka-assembly_2.10-1.6.2.jar
   environment:
-    https_proxy: http://10.175.250.81:8080
+    https_proxy: http://10.24.16.228:3128

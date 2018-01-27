@@ -25,5 +25,5 @@
 #- name: pip install
 #  pip: requirements=/tmp/pip_req.txt 
 #  environment:
-#    http_proxy: http://10.175.250.81:8080
-#    https_proxy: http://10.175.250.81:8080
+#    http_proxy: http://10.24.16.228:3128
+#    https_proxy: http://10.24.16.228:3128

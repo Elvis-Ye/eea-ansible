@@ -6,3 +6,5 @@
 - name: nfs server start
   service: name=nfs-kernel-server  state=started
 
+- name: restart ambari-server
+  service: name=ambari-server state=restarted
