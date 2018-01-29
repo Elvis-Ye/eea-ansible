@@ -3,13 +3,15 @@
 - name: add apt key
   apt_key: url=https://postgresql.org/media/keys/ACCC4CF8.asc state=present
   environment:
-    https_proxy: http://10.175.250.81:8080
+    https_proxy: http://10.24.16.228:3128
 
 - name: add apt repository
   apt_repository: repo='deb https://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main' state=present update_cache='yes'
+  environment:
+    https_proxy: http://10.24.16.228:3128
 
 - name: update apt cache
-  apt: update_cache='yes' cache_valid_time=3600
+  apt: update_cache='yes'
 
 - name: apt install postgres
   apt: name='postgresql-9.4' state='present'

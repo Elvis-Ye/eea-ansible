@@ -11,7 +11,7 @@
 #    name: "{{ hostname }}"
 #  tags: hostname
 #
-#- name: update /etc/hosts file with other servers
-#  template: src=hosts.j2 dest=/etc/hosts
-#  tags: hostfile
+- name: update /etc/hosts file with other servers
+  template: src=hosts.j2 dest=/etc/hosts
+  tags: hostfile
 

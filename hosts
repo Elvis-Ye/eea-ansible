@@ -1,10 +1,17 @@
 [eea-all]
-analytics-hdp-1
-analytics-hdp-2
-analytics-hdp-3
-analytics-hdp-4
-analytics-hdp-5
-analytics-web-1
+10.24.13.9 hostname=analytics-hdp-1.e2muowc33c0ujk1xqjgv3deegg.ax.internal.cloudapp.net
+10.24.13.4 hostname=analytics-hdp-2.e2muowc33c0ujk1xqjgv3deegg.ax.internal.cloudapp.net
+10.24.13.7 hostname=analytics-hdp-3.e2muowc33c0ujk1xqjgv3deegg.ax.internal.cloudapp.net
+10.24.13.8 hostname=analytics-hdp-4.e2muowc33c0ujk1xqjgv3deegg.ax.internal.cloudapp.net
+10.24.13.6 hostname=analytics-hdp-5.e2muowc33c0ujk1xqjgv3deegg.ax.internal.cloudapp.net
+10.24.13.11 hostname=analytics-web-1.e2muowc33c0ujk1xqjgv3deegg.ax.internal.cloudapp.net
+
+#analytics-hdp-1
+#analytics-hdp-2
+#analytics-hdp-3
+#analytics-hdp-4
+#analytics-hdp-5
+#analytics-web-1
 
 [postgresql_server]
 analytics-hdp-2

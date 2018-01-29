@@ -1,5 +1,0 @@
----
-- name: fetch pub key from servers
-  fetch:
-    src: /root/.ssh/id_rsa.pub
-    dest: /home/ubuntu/ansible/fetch_files 
