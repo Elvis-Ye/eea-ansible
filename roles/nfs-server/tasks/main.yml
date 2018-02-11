@@ -1,0 +1,16 @@
+---
+# tasks file for nfs-server
+- name: Create share dir
+  file: path=/data/eea/rms state=directory mode=0777
+
+- name: Create link for eea share dir
+  file: src=/data/eea/rms dest=/data/eea/RMS state=link
+
+- name: apt install nfs-server
+  apt: name=nfs-kernel-server state=present
+
+- name: update exports file
+  lineinfile: dest=/etc/exports line='/data/eea *(rw,sync,no_root_squash)'
+  notify: nfs server start
+
+- meta: flush_handlers

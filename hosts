@@ -1,0 +1,30 @@
+[eea-all]
+192.168.34.59 hostname=eea-ta1-1.localnova
+192.168.34.58 hostname=eea-ta1-2.localnova
+192.168.34.6 hostname=eea-ta1-3.localnova
+
+[ambari-server]
+192.168.34.59
+
+[ambari-node]
+eea-ta1-1.localnova
+eea-ta1-2.localnova
+eea-ta1-3.localnova
+
+[postgresql_server]
+192.168.34.21 
+
+[redis_server]
+192.168.34.117 
+
+[nfs-server]
+192.168.34.39
+
+[nfs-client]
+192.168.34.25
+192.168.34.26
+
+[all:vars]
+ansible_ssh_user=ubuntu
+ansible_ssh_private_key_file=/home/ubuntu/EEA
+

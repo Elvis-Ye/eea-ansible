@@ -1,0 +1,9 @@
+HTTP_PROXY: http://10.175.250.81:8080
+HTTPS_PROXY: http://10.175.250.81:8080
+FTP_PROXY: http://10.175.250.81:8080
+NO_PROXY: ericsson.se,127.0.0.1,localhost,localnova,192.168.34.77,147.128.68.27,169.144.135.53
+ProxyHost: 10.175.250.81
+ProxyPort: 8080
+NTPSERVER: 10.175.250.66
+cluster_name: EEACLUSTER
+wait_timeout: 10

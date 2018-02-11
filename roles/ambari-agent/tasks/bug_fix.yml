@@ -1,0 +1,19 @@
+---
+- name: Remove spark directory
+  file:
+    path: /usr/hdp/current/spark-client
+    state: absent
+
+- name: dpkg configure
+  command: dpkg --configure -a
+
+- name: apt update cache
+  apt: update_cache=yes
+
+- name: remove lock file
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/lib/dpkg/lock
+    - /var/cache/apt/archives/lock

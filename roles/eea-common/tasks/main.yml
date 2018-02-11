@@ -1,0 +1,35 @@
+---
+# tasks file for eea
+- import_tasks: THP.yml
+  tags: THP
+
+- import_tasks: network-pre.yml
+  tags: network-pre
+
+- import_tasks: route.yml
+  tags: route
+
+- import_tasks: dns.yml
+  tags: dns
+
+- import_tasks: limits.yml
+  tags: limits
+
+- import_tasks: ntp.yml
+  tags: install_ntp
+
+- import_tasks: ssh-key.yml
+  tags: ssh-key
+
+- import_tasks: java.yml
+  tags: jdk
+
+- import_tasks: pip.yml
+  tags: pip
+
+- import_tasks: 3pp.yml
+  tags: 3pp
+
+- import_tasks: spark-lib.yml
+  tags: spark-lib
+

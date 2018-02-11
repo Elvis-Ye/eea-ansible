@@ -1,0 +1,6 @@
+{
+    "Repositories" : {
+      "base_url" : "http://192.168.34.77/hdp/HDP-2.5.3.0/ubuntu14/",
+      "verify_base_url" : true
+    }
+}

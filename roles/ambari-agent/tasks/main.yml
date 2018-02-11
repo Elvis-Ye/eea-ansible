@@ -1,0 +1,37 @@
+---
+# tasks file for ambari-agent
+- name: copy ambari and HDP apt list file
+  copy:
+    src: "{{ item.src }}"
+    dest: "/etc/apt/sources.list.d/{{ item.dest }}" 
+  with_items:
+    - { 'src': 'ambari.list', 'dest': 'ambari.list' }
+#    - { 'src': 'HDP.list', 'dest': 'HDP.list' }
+#    - { 'src': 'HDP-UTILS.list', 'dest': 'HDP-UTILS.list' }
+
+- name: Add repository key
+  apt_key: keyserver=keyserver.ubuntu.com id=B9733A7A07513CAD state=present
+  environment:
+    http_proxy: "{{ HTTP_PROXY }}"
+
+- name: Ensure required packages are installed (apt)
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+    state: installed
+  with_items:
+    - ambari-agent
+
+- name: Configure the Ambari agent
+  lineinfile: dest=/etc/ambari-agent/conf/ambari-agent.ini
+              regexp='^hostname\s*='
+              line='hostname={{ hostvars[groups['ambari-node'][0]]['inventory_hostname'] }}'
+              state=present
+  notify: Restart ambari-agent
+
+- meta: flush_handlers
+
+- name: Make sure ambari-agent is running
+  service: name=ambari-agent state=started enabled=yes
+
+- import_tasks: bug_fix.yml

@@ -1,0 +1,8 @@
+- name: Copy file for Disable Transparent Huge Pages THP
+  copy: src=disable-transparent-hugepages dest=/etc/init.d/disable-transparent-hugepages mode=755
+
+- name: Enable autostart THP
+  service: name=disable-transparent-hugepages state=started enabled=yes 
+
+#- name: Disable THP
+#  command: /etc/init.d/disable-transparent-hugepages start

@@ -1,0 +1,6 @@
+- name: update DNS client setting
+  copy: src=resolv.conf dest=/etc/resolvconf/resolv.conf.d/base
+
+#- name: update DNS current setting
+  #copy: src=resolv.conf dest=/etc/resolv.conf
+

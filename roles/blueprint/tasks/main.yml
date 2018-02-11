@@ -1,0 +1,112 @@
+---
+# tasks file for blueprint
+- name: Upload blueprint file
+  template: src=blueprint-3-nodes.json.j2 dest=/tmp/blueprint-3-nodes.json mode=0644
+
+- name: Slurp the blueprint file
+  slurp: src=/tmp/blueprint-3-nodes.json
+  register: cluster_blueprint
+
+- name: Make sure the blueprint doesn't already exist
+  uri: 
+    url: http://localhost:8080/api/v1/blueprints/cluster_blueprint
+    method: DELETE
+    force_basic_auth: yes
+    user: admin
+    password: admin
+    headers:
+      X-Requested-By: "ambari"
+    status_code: 200,201,202,404
+  ignore_errors: true
+
+- name: Register the blueprint with the Ambari server
+  uri: 
+    url: http://localhost:8080/api/v1/blueprints/cluster_blueprint
+    method: POST
+    force_basic_auth: yes
+    user: admin
+    password: admin
+    headers:
+      X-Requested-By: "ambari"
+    #body: " {{  lookup('file', 'blueprint-3-nodes.json') }}"
+    body: " {{ cluster_blueprint.content | b64decode }}"
+    body_format: raw
+    status_code: 200,201,202
+
+- name: Get the blueprint infomation from the Ambari server
+  uri: 
+    url: http://localhost:8080/api/v1/blueprints
+    method: GET
+    force_basic_auth: yes
+    user: admin
+    password: admin
+    headers: 
+     X-Requested-By: "ambari"
+    status_code: 200,201,202
+  register: existing_bp
+
+- debug: var=existing_bp
+
+- name: Setup Internal repo via REST API.
+  uri: 
+    url: "{{ item.url }}"
+    method: PUT
+    force_basic_auth: yes
+    user: admin
+    password: admin
+    headers:
+      X-Requested-By: "ambari"
+    body: " {{  lookup('file', '{{ item.file }}') }}"
+    body_format: raw
+    status_code: 200,201,202
+  with_items:
+    - { 'url': 'http://localhost:8080/api/v1/stacks/HDP/versions/2.5/operating_systems/ubuntu14/repositories/HDP-2.5', 'file': 'hdp-repo.json' }
+    - { 'url': 'http://localhost:8080/api/v1/stacks/HDP/versions/2.5/operating_systems/ubuntu14/repositories/HDP-UTILS-1.1.0.21', 'file': 'hdp-util-repo.json' }
+  tags: hdp_local_repo
+
+- name: Upload host mapping file
+  template: src=hostmapping-3.json.j2 dest=/tmp/hostmapping-3.json mode=0644
+
+- name: Slurp the host mapping  file
+  slurp: src=/tmp/hostmapping-3.json
+  register: host_mapping
+
+- name: Create the cluster instance
+  uri:
+    url: "http://localhost:8080/api/v1/clusters/{{ cluster_name }}"
+    method: POST
+    force_basic_auth: yes
+    user: admin
+    password: admin
+    headers:
+      X-Requested-By: "ambari"
+    body: " {{ host_mapping.content | b64decode }}"
+    body_format: raw
+    status_code: 200,201,202
+
+- pause: 
+    minutes: 2
+
+- name: Wait for the cluster to be built
+  uri: 
+    url: "http://localhost:8080/api/v1/clusters/{{ cluster_name }}/requests/1"
+    method: GET
+    force_basic_auth: yes
+    user: admin
+    password: admin
+    headers:
+      X-Requested-By: "ambari"
+    status_code: 200,201,202
+    return_content: yes
+  register: cluster_create_task
+  until: ((cluster_create_task.content|from_json).Requests.request_status == 'COMPLETED' or
+         (cluster_create_task.content|from_json).Requests.request_status == 'FAILED' or
+         (cluster_create_task.content|from_json).Requests.request_status == 'TIMEDOUT' or
+         (cluster_create_task.content|from_json).Requests.request_status == 'ABORTED')
+  retries: "{{ wait_timeout // 10 }}"
+  delay: 10
+  tags: check_status
+
+#- debug: msg="{{ cluster_create_task.content.Requests }}"
+- debug: var=(cluster_create_task.content|from_json).Requests.request_status
+  tags: check_status

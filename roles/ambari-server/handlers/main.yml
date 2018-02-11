@@ -1,0 +1,23 @@
+---
+# handlers file for ambari-server
+- name: Restart ambari-server
+  service: name=ambari-server state=restarted
+
+- name: restart postgresql service
+  service: name=postgresql state=restarted
+
+- name: ambari-server setup via expect
+  expect:
+    command: /usr/sbin/ambari-server setup
+    responses:
+      'Customize user account for ambari-server daemon \[y/n\] \(n\)\?': 'n'
+      'Enter choice \(1\):': '3'
+      'Path to JAVA_HOME:': '/usr/java/jdk1.8.0_162'
+      'Enter advanced database configuration \[y/n\] \(n\)\?': 'n'
+    echo: yes
+  register: ambari_server_setup
+  #environment:
+    #http_proxy: "{{ HTTP_PROXY }}"
+
+- name: setup steps
+  debug: var=ambari_server_setup

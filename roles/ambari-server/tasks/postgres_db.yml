@@ -1,0 +1,48 @@
+---
+- name: update pg_hba.conf
+  lineinfile:
+    path: /etc/postgresql/9.3/main/pg_hba.conf
+    line: "{{ item }}"
+    state: present
+    backup: yes
+  with_items:
+    - "local 	all 	hive 	password"
+    - "local 	all 	oozie 	password"
+    - "host  	all     all   192.168.34.0/25         password"
+  notify:
+    - restart postgresql service
+
+- name: update pg_hba.conf
+  replace:
+    path: /etc/postgresql/9.3/main/pg_hba.conf
+    regexp: '^local\s+all\s+postgres\s+peer'
+    replace: "local	 all	 postgres	 trust"
+    backup: yes
+  notify:
+    - restart postgresql service
+
+- meta: flush_handlers
+
+- name: install psycopg2 package for postgres module
+  pip: name=psycopg2
+  environment:
+    https_proxy: "{{ HTTP_PROXY }}"
+
+- name: create postgres db
+  postgresql_db:
+    name: "{{ item }}"
+  with_items:
+    - hive
+    - oozie
+  #become_user: postgres
+
+- name: Create user and grant access to database
+  postgresql_user:
+    db: "{{ item.db }}"
+    name: "{{ item.user }}"
+    password: "{{ item.pass }}"
+    priv: "ALL"
+  with_items:
+    - { 'db': 'hive', 'user': 'hive', 'pass': 'hive' }
+    - { 'db': 'oozie', 'user': 'oozie', 'pass': 'oozie' }
+  #become_user: postgres

@@ -1,0 +1,66 @@
+---
+- name: install pexpect via pip
+  pip: name=pexpect
+  environment:
+    https_proxy: "{{ HTTP_PROXY }}"
+
+- name: copy ambari apt list file
+  copy:
+    src: ambari.list
+    dest: /etc/apt/sources.list.d/ambari.list
+
+- name: Add repository key
+  apt_key: keyserver=keyserver.ubuntu.com id=B9733A7A07513CAD state=present
+  environment:
+    http_proxy: "{{ HTTP_PROXY }}"
+
+- name: apt update cache and Install ambari-server package
+  apt:
+    update_cache: yes
+    name: ambari-server
+    state: present
+  notify: 
+    - ambari-server setup via expect
+    - setup steps
+
+- meta: flush_handlers
+
+#- name: ambari-server setup via expect
+#  expect:
+#    command: /usr/sbin/ambari-server setup
+#    responses:
+#      'Customize user account for ambari-server daemon \[y/n\] \(n\)\?': 'n'
+#      'Enter choice \(1\):': '3'
+#      'Path to JAVA_HOME:': '/usr/java/jdk1.8.0_162'
+#      'Enter advanced database configuration \[y/n\] \(n\)\?': 'n'
+#    echo: yes
+#    timeout: 60
+#  environment:
+#    http_proxy: "{{ HTTP_PROXY }}"
+#
+##- name: Configure proxy for the Ambari server
+##  replace: 
+##    path: /var/lib/ambari-server/ambari-env.sh
+##    regexp: '-Djavax.security.auth.useSubjectCredsOnly=false'
+##    replace: '-Djavax.security.auth.useSubjectCredsOnly=false -Dhttp.proxyHost={{ ProxyHost }} -Dhttp.proxyPort={{ ProxyPort }}'
+##    backup: yes
+##  tags: ambari-proxy
+##  notify: Restart ambari-server
+##
+##- meta: flush_handlers
+
+- name: download postgres jdbc
+  get_url:
+     url: http://192.168.34.77/postgresql-42.2.1.jar
+     dest: /usr/share/java/postgresql-jdbc.jar
+  tags: jdbc
+
+- name: make jdbc available
+  command: ambari-server setup --jdbc-db=postgres --jdbc-driver=/usr/share/java/postgresql-jdbc.jar
+  tags: jdbc
+
+- import_tasks: postgres_db.yml
+  tags: postgres_db
+
+- name: make sure ambari-server started
+  service: name=ambari-server state=started enabled=yes

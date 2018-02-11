@@ -1,0 +1,17 @@
+---
+- name: copy environment for system level proxy setting
+  template: src=environment.j2 dest=/etc/environment mode=644
+  tags: proxy_setting
+    
+- name: copy apt.conf for apt-get  proxy setting
+  template: src=apt.conf.proxy.j2 dest=/etc/apt/apt.conf
+
+- name: set hostname
+  hostname: 
+    name: "{{ hostname }}"
+  tags: hostname
+
+- name: update /etc/hosts file with other servers
+  template: src=hosts.j2 dest=/etc/hosts
+  tags: hostfile
+

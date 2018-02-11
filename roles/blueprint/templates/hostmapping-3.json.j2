@@ -1,0 +1,46 @@
+{
+  "blueprint" : "cluster_blueprint",
+  "default_password" : "admin",
+  "configurations" : [
+    {
+      "hive-site" : {
+        "properties" : {
+          "javax.jdo.option.ConnectionPassword" : "hive"
+        }
+      }
+    },
+    {
+      "oozie-site" : {
+        "properties" : {
+          "oozie.service.JPAService.jdbc.password" : "oozie"
+        }
+      }
+    }
+  ],
+  "host_groups" :[
+    {
+      "name" : "host_group_1",
+      "hosts" : [
+        {
+          "fqdn" : "{{ hostvars[groups['ambari-node'][0]]['inventory_hostname'] | lower }}"
+        }
+      ]
+    },
+    {
+      "name" : "host_group_2",
+      "hosts" : [
+        {
+          "fqdn" : "{{ hostvars[groups['ambari-node'][1]]['inventory_hostname'] | lower }}"
+        }
+      ]
+    },
+        {
+      "name" : "host_group_3",
+      "hosts" : [
+        {
+          "fqdn" : "{{ hostvars[groups['ambari-node'][2]]['inventory_hostname'] | lower }}"
+        }
+      ]
+    }
+  ]
+}
