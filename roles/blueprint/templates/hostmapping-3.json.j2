@@ -27,9 +27,9 @@
           "fqdn" : "{{ hostvars[node]['inventory_hostname'] | lower }}"
         }{% if not loop.last %},{% endif %}
     {% endfor -%}
-    {%- endif %}
       ]
     },    
+    {%- endif %}
     {
       "name" : "host_group_1",
       "hosts" : [
