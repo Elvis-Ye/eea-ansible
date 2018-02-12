@@ -18,6 +18,18 @@
     }
   ],
   "host_groups" :[
+    {% if 'slave-nodes' in groups and groups['slave-nodes']|length > 0 -%}
+    {
+      "name" : "slavenode",
+      "hosts" : [{% for node in groups['slave-nodes']|sort %}
+
+        {
+          "fqdn" : "{{ hostvars[node]['inventory_hostname'] | lower }}"
+        }{% if not loop.last %},{% endif %}
+    {% endfor %}
+
+      ]
+    },    
     {
       "name" : "host_group_1",
       "hosts" : [

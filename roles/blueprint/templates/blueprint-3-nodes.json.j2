@@ -93,6 +93,8 @@
 		}
 	],
 	"host_groups": [{
+			"name": "host_group_2",
+			"configurations": [],
 			"components": [{
 					"name": "NODEMANAGER"
 				},
@@ -154,11 +156,11 @@
 					"name": "HIVE_CLIENT"
 				}
 			],
-			"configurations": [],
-			"name": "host_group_2",
 			"cardinality": "1"
 		},
-		{
+		{	
+			"name": "host_group_1",
+			"configurations": [],
 			"components": [{
 					"name": "ZOOKEEPER_SERVER"
 				},
@@ -184,11 +186,11 @@
 					"name": "RESOURCEMANAGER"
 				}
 			],
-			"configurations": [],
-			"name": "host_group_1",
 			"cardinality": "1"
 		},
-		{
+		{			
+			"name": "host_group_3",
+			"configurations": [],
 			"components": [{
 					"name": "NODEMANAGER"
 				},
@@ -253,10 +255,62 @@
 					"name": "PHOENIX_QUERY_SERVER"
 				}
 			],
-			"configurations": [],
-			"name": "host_group_3",
 			"cardinality": "1"
-		}
+		},
+	    {% if 'slave-nodes' in groups and groups['slave-nodes']|length > 0 -%}
+	    {
+		      "name" : "slavenode",
+		      "configurations" : [ ],
+		      "components" : [{
+					"name": "NODEMANAGER"
+				},
+				{
+					"name": "DATANODE"
+				},
+				{
+		          "name" : "ZOOKEEPER_CLIENT"
+		        },
+		        {
+		          "name" : "PIG"
+		        },
+		        {
+		          "name" : "OOZIE_CLIENT"
+		        },
+
+		        {
+		          "name" : "HIVE_CLIENT"
+		        },
+		        {
+		          "name" : "HDFS_CLIENT"
+		        },
+		        {
+		          "name" : "YARN_CLIENT"
+		        },
+		        {
+		          "name" : "HCAT"
+		        },
+		        {
+		          "name" : "MAPREDUCE2_CLIENT"
+		        },
+		        {
+		          "name" : "TEZ_CLIENT"
+		        },
+		        {
+		          "name" : "SPARK_CLIENT"
+		        },
+		        {
+		          "name" : "HBASE_CLIENT"
+		        },
+				{
+					"name": "METRICS_COLLECTOR"
+				},
+		        {
+		          "name" : "SLIDER"
+		        }
+		      ],
+		      "cardinality" : "{{ groups['slave-nodes']|length }}"
+    }
+    {% endif -%}
 	],
 	"Blueprints": {
 		"stack_name": "HDP",
