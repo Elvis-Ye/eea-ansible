@@ -99,14 +99,14 @@
     status_code: 200,201,202
     return_content: yes
   register: cluster_create_task
-  until: ((cluster_create_task.content|from_json).Requests.request_status == 'COMPLETED' or
-         (cluster_create_task.content|from_json).Requests.request_status == 'FAILED' or
-         (cluster_create_task.content|from_json).Requests.request_status == 'TIMEDOUT' or
-         (cluster_create_task.content|from_json).Requests.request_status == 'ABORTED')
-  retries: "{{ wait_timeout // 10 }}"
-  delay: 10
+#  until: ((cluster_create_task.content|from_json).Requests.request_status == 'COMPLETED' or
+#         (cluster_create_task.content|from_json).Requests.request_status == 'FAILED' or
+#         (cluster_create_task.content|from_json).Requests.request_status == 'TIMEDOUT' or
+#         (cluster_create_task.content|from_json).Requests.request_status == 'ABORTED')
+#  retries: "{{ wait_timeout // 10 }}"
+#  delay: 10
   tags: check_status
 
 #- debug: msg="{{ cluster_create_task.content.Requests }}"
-- debug: var=(cluster_create_task.content|from_json).Requests.request_status
+- debug: var=(cluster_create_task.content|from_json).Requests
   tags: check_status
