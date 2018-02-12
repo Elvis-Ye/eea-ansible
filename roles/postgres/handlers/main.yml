@@ -1,0 +1,7 @@
+---
+# handlers file for postgres
+- name: init db
+  command: '/usr/pgsql-9.4/bin/postgresql94-setup initdb'
+
+- name: restart postgresql service
+  service: name=postgresql-9.4 state=restarted enabled='yes'

@@ -1,0 +1,14 @@
+---
+- name: install ntp package
+  yum: name=ntp state=present
+  notify:
+    - ntpdate local time server
+    - set timezone
+
+- meta: flush_handlers
+
+- name: configure ntp client
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  notify: restart ntp service
+
+- meta: flush_handlers

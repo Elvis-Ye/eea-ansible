@@ -1,0 +1,14 @@
+- name: Copy file for Disable Transparent Huge Pages THP
+  copy: src=disable-transparent-hugepages dest=/etc/init.d/disable-transparent-hugepages mode=755
+
+- name: Enable autostart THP
+  service: name=disable-transparent-hugepages state=started enabled=yes 
+
+- name: create tuned thp directory
+  file: path=/etc/tuned/no-thp state=directory mode=755
+
+- name: copy tuned.conf file
+  copy: src=tuned.conf dest=/etc/tuned/no-thp/tuned.conf
+  notify: Activate the tuned profile
+
+- meta: flush_handlers

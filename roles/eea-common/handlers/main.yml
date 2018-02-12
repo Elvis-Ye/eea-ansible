@@ -1,0 +1,31 @@
+---
+# handlers file for eea
+- name: Activate the tuned profile
+  shell: tuned-adm profile no-thp
+
+- name: reboot hosts
+  shell: sleep 2 && /sbin/shutdown -r now
+  async: 1
+  poll: 0
+  ignore_errors: true
+  #listen: "reboot server"
+
+- name: wait for vm up
+  wait_for:
+    host: "{{ inventory_hostname }}"
+    port: 22
+    search_regex: OpenSSH
+    state: started
+    delay: 10
+  #listen: "reboot server"
+  connection: local
+
+- name: ntpdate local time server
+  command: ntpdate "{{ NTPSERVER }}"
+
+- name: set timezone
+  command: timedatectl set-timezone Asia/Dubai
+
+- name: restart ntp service
+  service: name=ntpd state=restarted
+

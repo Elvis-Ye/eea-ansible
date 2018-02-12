@@ -1,0 +1,26 @@
+---
+- name: install psycopg2 package for postgres module
+  pip: name=psycopg2
+  environment:
+    https_proxy: "{{ HTTP_PROXY }}"
+
+- name: create postgres db
+  postgresql_db:
+    name: "{{ item }}"
+  with_items:
+    - hive
+    - oozie
+  become_user: postgres
+
+- name: Create user and grant access to database
+  postgresql_user:
+    db: "{{ item.db }}"
+    name: "{{ item.user }}"
+    password: "{{ item.pass }}"
+    priv: "ALL"
+  with_items:
+    - { 'db': 'hive', 'user': 'hive', 'pass': 'hive' }
+    - { 'db': 'oozie', 'user': 'oozie', 'pass': 'oozie' }
+  become_user: postgres
+
+  

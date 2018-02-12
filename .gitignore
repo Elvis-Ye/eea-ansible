@@ -1,0 +1,3 @@
+roles/eea-common/files/*.gz
+public_keys/*.pub
+*.retry

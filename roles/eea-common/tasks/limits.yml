@@ -1,0 +1,24 @@
+- name: Change limit.conf file
+  lineinfile:
+      dest: /etc/security/limits.conf
+      state: present
+      line: '{{ item }}'
+  with_items:
+     - '*               soft   nofile            65535'
+     - '*               hard   nofile            65535'
+
+- name: Change /etc/systemd/system.conf file
+  lineinfile:
+      dest: /etc/systemd/system.conf
+      state: present
+      line: '{{ item }}'
+  with_items:
+     - 'DefaultLimitCORE=infinity'
+     - 'DefaultLimitNOFILE=65535'
+     - 'DefaultLimitNPROC=65535'
+  notify: 
+    - reboot hosts
+    - wait for vm up
+
+- meta: flush_handlers
+

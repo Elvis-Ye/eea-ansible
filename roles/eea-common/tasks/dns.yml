@@ -1,0 +1,9 @@
+- name: disable dhclient-script update DNS client
+  lineinfile:
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    regexp: 'PEERDNS="yes"'
+    line: 'PEERDNS="no"'
+    backrefs: yes
+
+- name: update DNS client setting
+  template: src=resolv.conf.j2 dest=/etc/resolv.conf

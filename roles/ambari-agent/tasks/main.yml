@@ -1,0 +1,34 @@
+---
+# tasks file for ambari-agent
+- name: copy ambari yum repo file
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { 'src': 'ambari.repo', 'dest': '/etc/yum.repos.d/ambari.repo' }
+    - { 'src': 'ambari-hdp-1.repo', 'dest': '/etc/yum.repos.d/ambari-hdp-1.repo' }
+
+- name: copy priorities.conf file
+  copy:
+    src: priorities.conf
+    dest: /etc/yum/pluginconf.d/priorities.conf
+
+- name: yum Install ambari-agent package
+  yum:
+    #update_cache: yes
+    name: ambari-agent
+    state: present
+
+- name: Configure the Ambari agent
+  lineinfile: dest=/etc/ambari-agent/conf/ambari-agent.ini
+              regexp='^hostname\s*='
+              line='hostname={{ hostvars[groups['eea-all'][0]]['inventory_hostname'] }}'
+              state=present
+  notify: Restart ambari-agent
+
+- meta: flush_handlers
+
+- name: Make sure ambari-agent is running
+  service: name=ambari-agent state=started enabled=yes
+
+- import_tasks: jdbc_download.yml

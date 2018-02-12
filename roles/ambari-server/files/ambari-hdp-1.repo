@@ -1,0 +1,16 @@
+[HDP-2.6-repo-1]
+name=HDP-2.6-repo-1
+baseurl=http://192.168.34.77/HDP-2.6.4/HDP/centos7/2.6.4.0-91
+proxy=_none_
+
+path=/
+enabled=1
+gpgcheck=0
+[HDP-UTILS-1.1.0.21-repo-1]
+name=HDP-UTILS-1.1.0.21-repo-1
+baseurl=http://192.168.34.77/HDP-2.6.4/HDP-UTILS-1.1.0.22-centos7
+proxy=_none_
+
+path=/
+enabled=1
+

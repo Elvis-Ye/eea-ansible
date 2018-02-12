@@ -1,0 +1,37 @@
+---
+- name: create java directory
+  file: path=/usr/java state=directory mode=755
+
+- name: unarchive java8
+  unarchive: 
+    src: http://192.168.34.77/jdk-8u162-linux-x64.tar.gz 
+    dest: /usr/java
+    remote_src: yes
+
+- name: 'copy set_java_file'
+  copy: src='set_java_file.sh' dest='/tmp' mode=0700
+  
+- name: 'set java'
+  shell: '/tmp/set_java_file.sh'
+ 
+- shell: 'java -version'
+  register: javav
+
+- debug: var=javav.stderr_lines
+
+- name: yum install unzip package for jce.zip
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - zip
+    - unzip
+    - wget
+    - gcc
+
+- name: 'unarchive jce'
+  unarchive:
+    src: http://192.168.34.77/jce_policy-8.zip
+    dest: '/usr/java/jdk1.8.0_162/jre/lib/security/'
+    remote_src: yes
+

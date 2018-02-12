@@ -1,0 +1,9 @@
+---
+- name: create /usr/share/java dir
+  file: path=/usr/share/java state=directory
+
+- name: download postgres jdbc
+  get_url:
+     url: http://192.168.34.77/postgresql-42.2.1.jar
+     dest: /usr/share/java/postgresql-jdbc.jar
+

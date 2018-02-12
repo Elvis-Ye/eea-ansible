@@ -1,0 +1,4 @@
+---
+# handlers file for nfs-server
+- name: nfs server start
+  service: name=nfs-server.service state=started enabled=yes

@@ -1,0 +1,4 @@
+127.0.0.1 localhost 
+{% for item in groups['eea-all'] %}
+{{ item }}  {{ hostvars[item]['hostname'] }} 
+{% endfor %} 

@@ -1,0 +1,82 @@
+---
+# tasks file for ambari-server
+
+- name: install pexpect via pip
+  pip: name=pexpect
+  environment:
+    https_proxy: "{{ HTTP_PROXY }}"
+
+#- name: copy ambari yum repo file
+#  copy:
+#    src: ambari.repo
+#    dest: /etc/yum.repos.d/ambari.repo
+#
+#- name: copy ambari hdp yum repo file
+#  copy:
+#    src: ambari-hdp-1.repo
+#    dest: /etc/yum.repos.d/ambari-hdp-1.repo
+
+- name: copy ambari yum repo file
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  with_items:
+    - { 'src': 'ambari.repo', 'dest': '/etc/yum.repos.d/ambari.repo' }
+    - { 'src': 'ambari-hdp-1.repo', 'dest': '/etc/yum.repos.d/ambari-hdp-1.repo' }
+
+- name: copy priorities.conf file
+  copy:
+    src: priorities.conf
+    dest: /etc/yum/pluginconf.d/priorities.conf
+
+- name: yum Install ambari-server package
+  yum:
+    #update_cache: yes
+    name: ambari-server
+    state: present
+  notify: ambari-server-setup
+
+- meta: flush_handlers
+
+#- name: ambari-server setup via expect
+#  expect:
+#    command: /usr/sbin/ambari-server setup
+#    responses:
+#      'Customize user account for ambari-server daemon \[y/n\] \(n\)\?': 'n'
+#      'Enter choice \(1\):': '3'
+#      'Path to JAVA_HOME:': '/usr/java/jdk1.8.0_162'
+#      'Enable Ambari Server to download and install GPL Licensed LZO packages \[y/n\] \(n\)\?': 'n'
+#      'Enter advanced database configuration \[y/n\] \(n\)\?': 'n'
+#
+#    echo: yes
+#    timeout: 60
+##  environment:
+##    http_proxy: "{{ HTTP_PROXY }}"
+#  register: ambari_server_setup
+#  tags: ambari-server-expect
+#
+#- debug: var=ambari_server_setup
+#  tags: ambari-server-expect
+
+#- name: Configure proxy for the Ambari server
+#  lineinfile: dest=/var/lib/ambari-server/ambari-env.sh
+#              regexp='-Djavax.security.auth.useSubjectCredsOnly=false'
+#              line='-Djavax.security.auth.useSubjectCredsOnly=false -Dhttp.proxyHost={{ ProxyHost }} -Dhttp.proxyPort={{ ProxyPort }}'
+#              state=present
+#  notify: Restart ambari-server
+#
+#- meta: flush_handlers
+
+- name: pause 20 seconds
+  pause:
+    seconds: 20
+
+- name: make sure ambari-server started
+  systemd: name=ambari-server state=started enabled=yes
+  #service: name=ambari-server state=started enabled=yes
+
+- import_tasks: jdbc.yml
+  tags: jdbc
+
+- import_tasks: postgres_db.yml
+  tags: postgres_db

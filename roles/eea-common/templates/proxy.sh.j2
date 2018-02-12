@@ -1,0 +1,6 @@
+http_proxy="{{ HTTP_PROXY }}"
+https_proxy="{{ HTTP_PROXY }}"
+ftp_proxy="{{ HTTP_PROXY }}"
+RSYNC_PROXY="{{ ProxyHost }}":"{{ ProxyPort }}"
+no_proxy='{% for i in groups['eea-all'] -%} {{ i }}, {%- endfor %}{{ NO_PROXY }}'
+export http_proxy https_proxy ftp_proxy RSYNC_PROXY no_proxy

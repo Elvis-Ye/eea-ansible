@@ -1,0 +1,10 @@
+- hosts: nfs-server
+  gather_facts: False
+  remote_user: ubuntu
+  become: true
+  become_method: sudo
+  become_user: root
+
+  roles:
+    - ambari-server
+#    - nfs-server
