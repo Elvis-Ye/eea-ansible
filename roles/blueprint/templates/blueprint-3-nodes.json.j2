@@ -92,222 +92,96 @@
 		  }
 		}
 	],
-	"host_groups": [{
+	"host_groups": [
+		{% if 'slave-nodes' in groups and groups['slave-nodes']|length > 0 -%}
+		{
+		  "name" : "slavenode",
+		  "configurations" : [ ],
+		  "components" : [
+				{"name": "NODEMANAGER"},
+				{"name": "DATANODE"},
+				{"name" : "ZOOKEEPER_CLIENT"},
+				{"name" : "PIG"},
+				{"name" : "OOZIE_CLIENT"},
+				{"name" : "HIVE_CLIENT"},
+				{"name" : "HDFS_CLIENT"},
+				{"name" : "YARN_CLIENT"},
+				{"name" : "HCAT"},
+				{"name" : "MAPREDUCE2_CLIENT"},
+				{"name" : "TEZ_CLIENT"},
+				{"name" : "SPARK_CLIENT"},
+				{"name" : "HBASE_CLIENT"},
+				{"name" : "SLIDER"} ],
+	      "cardinality" : "{{ groups['slave-nodes']|length }}"
+	    },
+	    {% endif -%}
+		{
 			"name": "host_group_2",
 			"configurations": [],
-			"components": [{
-					"name": "NODEMANAGER"
-				},
-				{
-					"name": "SPARK_CLIENT"
-				},
-				{
-					"name": "YARN_CLIENT"
-				},
-				{
-					"name": "HDFS_CLIENT"
-				},
-				{
-					"name": "HIVE_SERVER"
-				},
-				{
-					"name": "METRICS_MONITOR"
-				},
-				{
-					"name": "HIVE_METASTORE"
-				},
-				{
-					"name": "TEZ_CLIENT"
-				},
-				{
-					"name": "ZOOKEEPER_CLIENT"
-				},
-				{
-					"name": "HCAT"
-				},
-				{
-					"name": "PIG"
-				},
-				{
-					"name": "WEBHCAT_SERVER"
-				},
-				{
-					"name": "SECONDARY_NAMENODE"
-				},
-				{
-					"name": "MAPREDUCE2_CLIENT"
-				},
-				{
-					"name": "SLIDER"
-				},
-				{
-					"name": "OOZIE_CLIENT"
-				},
-				{
-					"name": "DATANODE"
-				},
-				{
-					"name": "HBASE_CLIENT"
-				},
-				{
-					"name": "SPARK_JOBHISTORYSERVER"
-				},
-				{
-					"name": "HIVE_CLIENT"
-				}
-			],
-			"cardinality": "1"
-		},
-		{	
-			"name": "host_group_1",
-			"configurations": [],
-			"components": [{
-					"name": "ZOOKEEPER_SERVER"
-				},
-				{
-					"name": "AMBARI_SERVER"
-				},
-				{
-					"name": "HISTORYSERVER"
-				},
-				{
-					"name": "METRICS_MONITOR"
-				},
-				{
-					"name": "NAMENODE"
-				},
-				{
-					"name": "APP_TIMELINE_SERVER"
-				},
-				{
-					"name": "METRICS_GRAFANA"
-				},
-				{
-					"name": "RESOURCEMANAGER"
-				}
-			],
+			"components": [
+				{"name": "NODEMANAGER"},
+				{"name": "SPARK_CLIENT"},
+				{"name": "YARN_CLIENT"},
+				{"name": "HDFS_CLIENT"},
+				{"name": "HIVE_SERVER"},
+				{"name": "METRICS_MONITOR"},
+				{"name": "HIVE_METASTORE"},
+				{"name": "TEZ_CLIENT"},
+				{"name": "ZOOKEEPER_CLIENT"},
+				{"name": "HCAT"},
+				{"name": "PIG"},
+				{"name": "WEBHCAT_SERVER"},
+				{"name": "SECONDARY_NAMENODE"},
+				{"name": "MAPREDUCE2_CLIENT"},
+				{"name": "SLIDER"},
+				{"name": "OOZIE_CLIENT"},
+				{"name": "DATANODE"},
+				{"name": "HBASE_CLIENT"},
+				{"name": "SPARK_JOBHISTORYSERVER"},
+				{"name": "HIVE_CLIENT"} ],
 			"cardinality": "1"
 		},
 		{			
-			"name": "host_group_3",
-			"configurations": [],
-			"components": [{
-					"name": "NODEMANAGER"
-				},
-				{
-					"name": "SPARK_CLIENT"
-				},
-				{
-					"name": "YARN_CLIENT"
-				},
-				{
-					"name": "HDFS_CLIENT"
-				},
-				{
-					"name": "METRICS_MONITOR"
-				},
-				{
-					"name": "HBASE_MASTER"
-				},
-				{
-					"name": "TEZ_CLIENT"
-				},
-				{
-					"name": "ZOOKEEPER_CLIENT"
-				},
-				{
-					"name": "HCAT"
-				},
-				{
-					"name": "PIG"
-				},
-				{
-					"name": "KAFKA_BROKER"
-				},
-				{
-					"name": "MAPREDUCE2_CLIENT"
-				},
-				{
-					"name": "SLIDER"
-				},
-				{
-					"name": "OOZIE_CLIENT"
-				},
-				{
-					"name": "HBASE_REGIONSERVER"
-				},
-				{
-					"name": "DATANODE"
-				},
-				{
-					"name": "HBASE_CLIENT"
-				},
-				{
-					"name": "OOZIE_SERVER"
-				},
-				{
-					"name": "HIVE_CLIENT"
-				},
-				{
-					"name": "METRICS_COLLECTOR"
-				},
-				{
-					"name": "PHOENIX_QUERY_SERVER"
-				}
-			],
-			"cardinality": "1"
+		"name": "host_group_3",
+		"configurations": [],
+		"components": [
+			{ "name": "NODEMANAGER" },
+			{ "name": "SPARK_CLIENT" },
+			{ "name": "YARN_CLIENT" },
+			{ "name": "HDFS_CLIENT" },
+			{ "name": "METRICS_MONITOR" },
+			{ "name": "HBASE_MASTER" }, 
+			{ "name": "TEZ_CLIENT" }, 
+			{ "name": "ZOOKEEPER_CLIENT" }, 
+			{ "name": "HCAT" }, 
+			{ "name": "PIG" }, 
+			{ "name": "KAFKA_BROKER" }, 
+			{ "name": "MAPREDUCE2_CLIENT" }, 
+			{ "name": "SLIDER" }, 
+			{ "name": "OOZIE_CLIENT" }, 
+			{ "name": "HBASE_REGIONSERVER" }, 
+			{ "name": "DATANODE" }, 
+			{ "name": "HBASE_CLIENT" }, 
+			{ "name": "OOZIE_SERVER" }, 
+			{ "name": "HIVE_CLIENT" }, 
+			{ "name": "METRICS_COLLECTOR" }, 
+			{ "name": "PHOENIX_QUERY_SERVER" } ],
+		"cardinality": "1"
 		},
-	    {% if 'slave-nodes' in groups and groups['slave-nodes']|length > 0 -%}
-	    {
-		      "name" : "slavenode",
-		      "configurations" : [ ],
-		      "components" : [{
-		          "name": "NODEMANAGER"
-		        },
-		        {
-		          "name": "DATANODE"
-		        },
-		        {
-		          "name" : "ZOOKEEPER_CLIENT"
-		        },
-		        {
-		          "name" : "PIG"
-		        },
-		        {
-		          "name" : "OOZIE_CLIENT"
-		        },
-
-		        {
-		          "name" : "HIVE_CLIENT"
-		        },
-		        {
-		          "name" : "HDFS_CLIENT"
-		        },
-		        {
-		          "name" : "YARN_CLIENT"
-		        },
-		        {
-		          "name" : "HCAT"
-		        },
-		        {
-		          "name" : "MAPREDUCE2_CLIENT"
-		        },
-		        {
-		          "name" : "TEZ_CLIENT"
-		        },
-		        {
-		          "name" : "SPARK_CLIENT"
-		        },
-		        {
-		          "name" : "HBASE_CLIENT"
-		        },
-		        {
-		          "name" : "SLIDER"
-		        }
-		      ],
-		      "cardinality" : "{{ groups['slave-nodes']|length }}"
-    }
-    {% endif -%}
+		{	
+		"name": "host_group_1",
+		"configurations": [],
+		"components": [
+			{"name": "ZOOKEEPER_SERVER"},
+			{"name": "AMBARI_SERVER"},
+			{"name": "HISTORYSERVER"},
+			{"name": "METRICS_MONITOR"},
+			{"name": "NAMENODE"},
+			{"name": "APP_TIMELINE_SERVER"},
+			{"name": "METRICS_GRAFANA"},
+			{"name": "RESOURCEMANAGER"} ],
+		"cardinality": "1"
+		}
 	],
 	"Blueprints": {
 		"stack_name": "HDP",
