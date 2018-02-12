@@ -3,10 +3,10 @@
   unarchive:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
+    remote_src: yes
   with_items:
-    - { 'src': 'dist-packages_MS2_user.tar.gz', 'dest': '/usr/local/lib/python2.7' }
-    - { 'src': 'dist-packages_MS2_os.tar.gz', 'dest': '/usr/lib/python2.7' }
-  tags: 3pp
+    - { 'src': 'http://192.168.34.77/3pp/dist-packages_MS2_user.tar.gz', 'dest': '/usr/local/lib/python2.7' }
+    - { 'src': 'http://192.168.34.77/3pp/dist-packages_MS2_os.tar.gz', 'dest': '/usr/lib/python2.7' }
 
 - name: pip install json-tools
   pip: name=json-tools

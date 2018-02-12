@@ -8,6 +8,12 @@
   shell: cat /root/.ssh/id_rsa.pub
   register: master_ssh_key
 
+- name: Make sure public_keys folder existing
+  file:
+    path: public_keys
+    state: directory
+  delegate_to: 127.0.0.1
+
 - name: Delete pub files if existing
   local_action:
     module: file
