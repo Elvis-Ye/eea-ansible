@@ -24,3 +24,5 @@
 - debug: var=ambari_server_setup
   listen: ambari-server-setup
 
+- name: restart postgresql service
+  service: name=postgresql state=restarted

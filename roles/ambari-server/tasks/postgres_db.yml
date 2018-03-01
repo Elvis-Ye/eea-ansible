@@ -23,4 +23,20 @@
     - { 'db': 'oozie', 'user': 'oozie', 'pass': 'oozie' }
   become_user: postgres
 
+- name: change postgre pg_hba.conf
+  template: src=pg_hba.conf.j2 dest=/var/lib/pgsql/data/pg_hba.conf backup=yes
+  tags: pg_hba
+
+- name: copy postgresql.conf
+  lineinfile:
+    dest: /var/lib/pgsql/data/postgresql.conf
+    regexp: "^#?listen_addresses"
+    line: "listen_addresses = '*'"
+    state: present
+    backup: yes
+  tags: listen_port
+  notify:
+   - restart postgresql service
+
+- meta: flush_handlers
   

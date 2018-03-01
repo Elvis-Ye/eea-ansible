@@ -1,10 +1,10 @@
 #VERSION_NUMBER=2.6.1.0-143
 [ambari-2.6.1.0]
 name=ambari Version - ambari-2.6.1.0
-baseurl=http://192.168.34.77/ambari/centos7/2.6.1.0-143
+baseurl='http://{{ yum_repo }}/ambari/centos7/2.6.1.0-143'
 proxy=_none_
 gpgcheck=1
-gpgkey=http://192.168.34.77/ambari/RPM-GPG-KEY-Jenkins
+gpgkey='http://{{ yum_repo }}/ambari/RPM-GPG-KEY-Jenkins'
 enabled=1
 priority=1
 

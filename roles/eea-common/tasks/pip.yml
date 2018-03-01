@@ -10,7 +10,6 @@
   with_items:
     - python2-pip
     - python-devel
-#  notify: upgrade pip
 
 - name: upgrade pip
   pip:
@@ -20,27 +19,10 @@
     https_proxy: "{{ HTTP_PROXY }}"
   tags: upgrade-pip
 
-#- meta: flush_handlers
-
-#- name: unarchive 3pp packages
-#  unarchive:
-#    src: "{{ item.src }}" 
-#    dest: "{{ item.dest }}"
-#  with_items:
-#    - { 'src': 'dist-packages_MS2_user.tar.gz', 'dest': '/usr/local/lib/python2.7' } 
-#    - { 'src': 'dist-packages_MS2_os.tar.gz', 'dest': '/usr/lib/python2.7' } 
-#  tags: 3pp
+#- name: copy pip-txt file
+#  copy: src=pip_req.txt dest=/tmp/pip_req.txt
 #
-#- name: pip install json-tools
-#  pip: name=json-tools
+#- name: pip install 3pp
+#  pip: requirements=/tmp/pip_req.txt 
 #  environment:
 #    https_proxy: "{{ HTTP_PROXY }}"
-
-- name: copy pip-txt file
-  copy: src=pip_req.txt dest=/tmp/pip_req.txt
-
-- name: pip install 3pp
-  pip: requirements=/tmp/pip_req.txt 
-  environment:
-    http_proxy: "{{ HTTP_PROXY }}"
-    https_proxy: "{{ HTTP_PROXY }}"

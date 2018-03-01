@@ -1,12 +1,13 @@
 ---
 # tasks file for ambari-agent
 - name: copy ambari yum repo file
-  copy:
+  template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
   with_items:
-    - { 'src': 'ambari.repo', 'dest': '/etc/yum.repos.d/ambari.repo' }
-    - { 'src': 'ambari-hdp-1.repo', 'dest': '/etc/yum.repos.d/ambari-hdp-1.repo' }
+    - { 'src': 'ambari.repo.j2', 'dest': '/etc/yum.repos.d/ambari.repo' }
+#    - { 'src': 'ambari-hdp-1.repo.j2', 'dest': '/etc/yum.repos.d/ambari-hdp-1.repo' }
+  tags: copy_yum_repo_conf
 
 - name: copy priorities.conf file
   copy:
@@ -20,10 +21,12 @@
     state: present
 
 - name: Configure the Ambari agent
-  lineinfile: dest=/etc/ambari-agent/conf/ambari-agent.ini
-              regexp='^hostname\s*='
-              line='hostname={{ hostvars[groups['eea-all'][0]]['inventory_hostname'] }}'
-              state=present
+  lineinfile:
+     dest: /etc/ambari-agent/conf/ambari-agent.ini
+     regexp: '^hostname\s*='
+     line: "hostname={{ hostvars[groups['eea-all'][0]]['inventory_hostname'] }}"
+     state: present
+     backrefs: yes
   notify: Restart ambari-agent
 
 - meta: flush_handlers
@@ -32,3 +35,15 @@
   service: name=ambari-agent state=started enabled=yes
 
 - import_tasks: jdbc_download.yml
+  tags: jdbc
+
+- import_tasks: bug_fix.yml
+  tags: bug_fix
+
+#- name: Configure the Ambari agent - disable proxy
+#  lineinfile: dest=/etc/yum.conf
+#              regexp='^proxy=http://10.175.250.81:8080'
+#              line='#proxy=http://10.175.250.81:8080'
+#              state=present
+#              backrefs=yes
+#  tags: disable_yum_proxy

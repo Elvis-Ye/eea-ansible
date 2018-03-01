@@ -1,0 +1,13 @@
+---
+- name: Remove spark directory
+  file:
+    path: /usr/hdp/current/spark-client
+    state: absent
+
+- name: remove lock file
+  file:
+    path: "{{ item }}"
+    state: absent
+  with_items:
+    - /var/run/yum.pid
+

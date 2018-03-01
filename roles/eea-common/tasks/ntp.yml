@@ -1,4 +1,8 @@
 ---
+- name: clean yum cache
+  shell: yum clean all && yum repolist
+  run_once: true
+
 - name: install ntp package
   yum: name=ntp state=present
   notify:

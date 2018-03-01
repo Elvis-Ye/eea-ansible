@@ -4,6 +4,6 @@
 
 - name: download postgres jdbc
   get_url:
-     url: http://192.168.34.77/postgresql-42.2.1.jar
+     url: 'http://{{ LOCAL_REPO }}/postgresql-42.2.1.jar'
      dest: /usr/share/java/postgresql-jdbc.jar
 

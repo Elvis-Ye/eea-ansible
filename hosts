@@ -1,26 +1,30 @@
 [eea-all]
-192.168.34.30 hostname=eea-autodeploy-1.novalocal
-192.168.34.31 hostname=eea-autodeploy-2.novalocal
-192.168.34.32  hostname=eea-autodeploy-3.novalocal
+192.168.34.98 hostname=eea-auto-1.novalocal
+192.168.34.100 hostname=eea-auto-2.novalocal
+192.168.34.99 hostname=eea-auto-3.novalocal
 
-#[ambari-node]
-#eea-ta1-1.novalocal
-#eea-ta1-2.novalocal
-#eea-ta1-3.novalocal
+[ambari-node]
+eea-auto-1.novalocal
+eea-auto-2.novalocal
+eea-auto-3.novalocal
+
+[ambari-server]
+192.168.34.98
+
+[slave-nodes]
 
 [postgresql_server]
-192.168.34.110 
-192.168.34.111 
+192.168.34.74
 
 [redis_server]
-192.168.34.111 
+192.168.34.76
 
 [nfs-server]
-192.168.34.30
+192.168.34.98
 
 [nfs-client]
-192.168.34.110
-192.168.34.111
+192.168.34.78
+192.168.34.8
 
 [all:vars]
 ansible_ssh_user=centos

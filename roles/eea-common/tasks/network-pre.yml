@@ -17,6 +17,7 @@
   lineinfile:
       dest: /etc/yum.conf
       state: present
+      backrefs: yes
       line: 'proxy={{ HTTP_PROXY }}'
 
 - name: update /etc/hosts file with other servers

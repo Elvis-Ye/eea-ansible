@@ -30,6 +30,6 @@
 - import_tasks: pip.yml
   tags: pip
 
-- import_tasks: spark-lib.yml
-  tags: spark-lib
+#- import_tasks: spark-lib.yml
+  #tags: spark-lib
 
