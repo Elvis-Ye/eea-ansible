@@ -8,18 +8,24 @@
   shell: cat /root/.ssh/id_rsa.pub
   register: master_ssh_key
 
+- name: create public_keys directory if it does not existing.
+  file: 
+    path: /tmp/public_keys
+    state: directory
+  connection: local
+
 - name: Delete pub files if existing
   local_action:
     module: file
     path: "{{ item }}"
     state: absent
   with_fileglob:
-    - public_keys/*.pub
+    - /tmp/public_keys/*.pub
 
 - name: Copy ssh key into file
-  local_action: copy content={{ master_ssh_key.stdout }} dest=./public_keys/{{ inventory_hostname }}.pub 
+  local_action: copy content={{ master_ssh_key.stdout }} dest=/tmp/public_keys/{{ inventory_hostname }}.pub 
 
 - name: Add public keys for developers
   authorized_key: user=root key={{ lookup('file', item) }}
   with_fileglob:
-   - public_keys/*.pub
+   - /tmp/public_keys/*.pub

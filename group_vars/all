@@ -8,6 +8,6 @@ NTPSERVER: 10.175.250.66
 NTPSERVER2: 10.175.250.67
 GATEWAY: 192.168.34.125
 DNS_SERVER: 10.175.172.67
-LOCAL_REPO: 192.168.34.77
-yum_repo: 192.168.34.80
+LOCAL_REPO: roy-ansible
+yum_repo: roy-ansible
 cluster_name: EEAcentos

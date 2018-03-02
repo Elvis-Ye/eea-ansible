@@ -1,17 +1,7 @@
 ---
-#- name: copy environment for system level proxy setting
-#  template: src=environment.j2 dest=/etc/environment mode=644
-#  tags: proxy_setting
-    
 - name: proxy setting via global initialization scripts for each user
   template: src=proxy.sh.j2 dest=/etc/profile.d/proxy.sh mode=644
   tags: proxy_setting
-
-#- name: delete wrong proxy
-#  lineinfile:
-#     dest: /etc/yum.conf
-#     regexp: proxy="http://10.175.250.81:8080"
-#     state: absent
 
 - name: yum proxy setting
   lineinfile:

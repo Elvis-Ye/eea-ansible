@@ -15,8 +15,6 @@
   pip:
     name: pip
     state: latest
-  environment:
-    https_proxy: "{{ HTTP_PROXY }}"
   tags: upgrade-pip
 
 #- name: copy pip-txt file

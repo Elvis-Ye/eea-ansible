@@ -7,7 +7,6 @@
     src: 'http://{{ LOCAL_REPO }}/jdk-8u162-linux-x64.tar.gz' 
     dest: /usr/java
     remote_src: yes
-  run_once: true
 
 - name: 'copy set_java_file'
   copy: src='set_java_file.sh' dest='/tmp' mode=0700
@@ -36,4 +35,3 @@
     src: 'http://{{ LOCAL_REPO }}/jce_policy-8.zip'
     dest: '/usr/java/jdk1.8.0_162/jre/lib/security/'
     remote_src: yes
-  run_once: true

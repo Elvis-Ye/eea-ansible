@@ -3,8 +3,8 @@
 
 - name: install pexpect via pip
   pip: name=pexpect
-  environment:
-    https_proxy: "{{ HTTP_PROXY }}"
+#  environment:
+#    https_proxy: "{{ HTTP_PROXY }}"
 
 - name: copy ambari yum repo file
   template:

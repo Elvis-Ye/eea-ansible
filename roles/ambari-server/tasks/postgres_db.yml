@@ -1,10 +1,8 @@
 ---
 - name: install psycopg2 package for postgres module
   pip: name=psycopg2
-  environment:
-    https_proxy: "{{ HTTP_PROXY }}"
 
-- name: create postgres db
+- name: create postgres hive and oozie db
   postgresql_db:
     name: "{{ item }}"
   with_items:
@@ -33,6 +31,7 @@
     regexp: "^#?listen_addresses"
     line: "listen_addresses = '*'"
     state: present
+    backrefs: yes
     backup: yes
   tags: listen_port
   notify:

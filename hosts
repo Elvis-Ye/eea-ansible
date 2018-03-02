@@ -1,15 +1,20 @@
 [eea-all]
-192.168.34.98 hostname=eea-auto-1.novalocal
-192.168.34.100 hostname=eea-auto-2.novalocal
-192.168.34.99 hostname=eea-auto-3.novalocal
+autodeploy-1
+autodeploy-2
+autodeploy-3
+
+[eea-all-ip]
+10.2.0.8
+10.2.0.9
+10.2.0.10
 
 [ambari-node]
-eea-auto-1.novalocal
-eea-auto-2.novalocal
-eea-auto-3.novalocal
+autodeploy-1
+autodeploy-2
+autodeploy-3
 
 [ambari-server]
-192.168.34.98
+autodeploy-1
 
 [slave-nodes]
 
@@ -20,7 +25,7 @@ eea-auto-3.novalocal
 192.168.34.76
 
 [nfs-server]
-192.168.34.98
+autodeploy-1
 
 [nfs-client]
 192.168.34.78
@@ -28,5 +33,5 @@ eea-auto-3.novalocal
 
 [all:vars]
 ansible_ssh_user=centos
-ansible_ssh_private_key_file=/home/ubuntu/EEA
+ansible_ssh_private_key_file=/home/centos/eea
 

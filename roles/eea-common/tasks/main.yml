@@ -3,14 +3,14 @@
 - import_tasks: THP.yml
   tags: THP
 
-- import_tasks: network-pre.yml
-  tags: network-pre
-
-- import_tasks: route.yml
-  tags: route
-
-- import_tasks: dns.yml
-  tags: dns
+#- import_tasks: network-pre.yml
+#  tags: network-pre
+#
+#- import_tasks: route.yml
+#  tags: route
+#
+#- import_tasks: dns.yml
+#  tags: dns
 
 - import_tasks: selinux.yml
   tags: selinux
