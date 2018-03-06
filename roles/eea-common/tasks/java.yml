@@ -4,7 +4,7 @@
 
 - name: unarchive java8
   unarchive: 
-    src: 'http://{{ LOCAL_REPO }}/jdk-8u162-linux-x64.tar.gz' 
+    src: 'http://{{ LOCAL_REPO }}/src/jdk-8u162-linux-x64.tar.gz' 
     dest: /usr/java
     remote_src: yes
 
@@ -32,6 +32,6 @@
 
 - name: 'unarchive jce'
   unarchive:
-    src: 'http://{{ LOCAL_REPO }}/jce_policy-8.zip'
+    src: 'http://{{ LOCAL_REPO }}/src/jce_policy-8.zip'
     dest: '/usr/java/jdk1.8.0_162/jre/lib/security/'
     remote_src: yes

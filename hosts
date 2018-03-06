@@ -1,22 +1,20 @@
 [eea-all]
-autodeploy-1
-autodeploy-2
-autodeploy-3
-
-[eea-all-ip]
-10.2.0.8
-10.2.0.9
-10.2.0.10
+10.2.0.8 hostname=eea-rh-1.azurelocal
+10.2.0.9 hostname=eea-rh-2.azurelocal
+10.2.0.10 hostname=eea-rh-3.azurelocal
+10.2.0.11 hostname=eea-rh-4.azurelocal
 
 [ambari-node]
-autodeploy-1
-autodeploy-2
-autodeploy-3
+eea-rh-1
+eea-rh-2
+eea-rh-3
+eea-rh-4
 
 [ambari-server]
-autodeploy-1
+eea-rh-1
 
 [slave-nodes]
+eea-rh-4
 
 [postgresql_server]
 192.168.34.74
@@ -25,7 +23,7 @@ autodeploy-1
 192.168.34.76
 
 [nfs-server]
-autodeploy-1
+eea-rh-1
 
 [nfs-client]
 192.168.34.78
@@ -33,5 +31,4 @@ autodeploy-1
 
 [all:vars]
 ansible_ssh_user=centos
-ansible_ssh_private_key_file=/home/centos/eea
-
+ansible_ssh_private_key_file=/home/centos/.ssh/eea-hdp

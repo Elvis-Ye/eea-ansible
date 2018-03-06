@@ -3,9 +3,9 @@
 - import_tasks: THP.yml
   tags: THP
 
-#- import_tasks: network-pre.yml
-#  tags: network-pre
-#
+- import_tasks: network-pre.yml
+  tags: network-pre
+
 #- import_tasks: route.yml
 #  tags: route
 #

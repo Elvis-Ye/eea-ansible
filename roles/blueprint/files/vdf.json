@@ -1,5 +1,5 @@
 {
   "VersionDefinition": {
-   "version_url": "http://192.168.34.77/HDP-2.6.4/HDP/centos7/2.6.4.0-91/HDP-2.6.4.0-91.xml"
+   "version_url": "file:/tmp/HDP-2.6.4.0-91.xml"
     }
 }

@@ -2,7 +2,21 @@
   "blueprint" : "cluster_blueprint",
   "repository_version_id": 1,
   "default_password" : "admin",
-  "configurations" : [ 
+  "configurations" : [
+    {
+      "hive-site" : {
+        "properties" : {
+          "javax.jdo.option.ConnectionPassword" : "hive"
+        }
+      }
+    },
+    {
+      "oozie-site" : {
+        "properties" : {
+          "oozie.service.JPAService.jdbc.password" : "oozie"
+        }
+      }
+    }
   ],
   "host_groups" :[
     {% if 'slave-nodes' in groups and groups['slave-nodes']|length > 0 -%}

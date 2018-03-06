@@ -1,14 +1,14 @@
 ---
-- name: proxy setting via global initialization scripts for each user
-  template: src=proxy.sh.j2 dest=/etc/profile.d/proxy.sh mode=644
-  tags: proxy_setting
-
-- name: yum proxy setting
-  lineinfile:
-      dest: /etc/yum.conf
-      state: present
-      backrefs: yes
-      line: 'proxy={{ HTTP_PROXY }}'
+#- name: proxy setting via global initialization scripts for each user
+#  template: src=proxy.sh.j2 dest=/etc/profile.d/proxy.sh mode=644
+#  tags: proxy_setting
+#
+#- name: yum proxy setting
+#  lineinfile:
+#      dest: /etc/yum.conf
+#      state: present
+#      backrefs: yes
+#      line: 'proxy={{ HTTP_PROXY }}'
 
 - name: update /etc/hosts file with other servers
   template: src=hosts.j2 dest=/etc/hosts
@@ -27,9 +27,15 @@
 #  shell: 'hostnamectl --static set-hostname {{ hostname }}'
 #  tags: hostname
 
-#- name: set hostname
-#  hostname:
-#    name: "{{ hostname }}"
-#  tags: hostname
+- name: set hostname
+  hostname:
+    name: "{{ hostname }}"
+  tags: hostname
 
+- name: disable firewalld
+  systemd:
+    name: firewalld
+    state: stopped
+    enabled: no
+  tags: firewall
 

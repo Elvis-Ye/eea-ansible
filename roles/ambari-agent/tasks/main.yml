@@ -31,19 +31,11 @@
 
 - meta: flush_handlers
 
-- name: Make sure ambari-agent is running
-  service: name=ambari-agent state=started enabled=yes
-
 - import_tasks: jdbc_download.yml
   tags: jdbc
 
-- import_tasks: bug_fix.yml
-  tags: bug_fix
+- name: Make sure ambari-agent is running
+  service: name=ambari-agent state=started enabled=yes
 
-#- name: Configure the Ambari agent - disable proxy
-#  lineinfile: dest=/etc/yum.conf
-#              regexp='^proxy=http://10.175.250.81:8080'
-#              line='#proxy=http://10.175.250.81:8080'
-#              state=present
-#              backrefs=yes
-#  tags: disable_yum_proxy
+#- import_tasks: bug_fix.yml
+#  tags: bug_fix

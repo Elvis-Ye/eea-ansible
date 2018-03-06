@@ -1,6 +1,6 @@
 local   all             postgres                                trust
 local   all             all                                     trust
 host    all             all             127.0.0.1/32            md5
-{% for ip in groups['eea-all-ip'] %}
+{% for ip in groups['eea-all'] %}
 host    all             all             {{ ip }}/32             password
 {% endfor %}
