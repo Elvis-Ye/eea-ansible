@@ -34,28 +34,83 @@
 				"oozie.db.schema.name": "oozie"
 			}
 		}
+	},
+	{
+		"spark-defaults": {
+			"properties": {
+				"spark.history.fs.cleaner.interval": "1d",
+				"spark.history.fs.cleaner.enabled": "true",
+				"spark.history.fs.cleaner.maxAge": "30d"
+
+			}
+		}
+	},
+	{
+	  "yarn-site" : {
+	    "properties" : {
+		  "yarn.nodemanager.resource.memory-mb" : "48500",
+		  "yarn.scheduler.minimum-allocation-mb" : "512",
+		  "yarn.scheduler.maximum-allocation-mb" : "16384",
+		  "yarn.resourcemanager.am.max-attempts" : "1",
+		  "yarn.scheduler.maximum-allocation-vcores" : "6",
+		  "yarn.nodemanager.resource.cpu-vcores" : "6"
+	    }
+	  }
+	},
+	{
+	  "capacity-scheduler" : {
+	    "properties" : {
+	      "yarn.scheduler.capacity.maximum-am-resource-percent" : "0.4"
+	    }
+	  }
+	},
+	{
+	  "yarn-env" : {
+	    "properties" : {
+	      "yarn_user_nofile_limit" : "128000",
+	      "resourcemanager_heapsize" : "2048"
+	    }
+	  }
+	},
+	{
+	  "hadoop-env" : {
+	    "properties" : {
+	      "namenode_heapsize" : "3379m",
+	      "namenode_opt_newsize" : "512m",
+		  "namenode_opt_maxnewsize" : "512m",
+		  "dtnode_heapsize" : "2048m"
+	    }
+	  }
+	},
+	{
+	  "hdfs-site" : {
+	    "properties" : {
+	      "dfs.permissions.superusergroup" : "hadoop"
+	    }
+	  }
 	}
   ],
   "host_groups" : [
      {% if 'slave-nodes' in groups and groups['slave-nodes']|length > 0 -%}
      {
-       "name" : "slavenode",
        "configurations" : [ ],
        "components" : [
-             { "name": "NODEMANAGER" },
-             { "name": "DATANODE" },
-             { "name" : "ZOOKEEPER_CLIENT" },
-             { "name" : "PIG" },
-             { "name" : "OOZIE_CLIENT" },
-             { "name" : "HIVE_CLIENT" },
-             { "name" : "HDFS_CLIENT" },
-             { "name" : "YARN_CLIENT" },
-             { "name" : "HCAT" },
-             { "name" : "MAPREDUCE2_CLIENT" },
-             { "name" : "TEZ_CLIENT" },
-             { "name" : "SPARK_CLIENT" },
-             { "name" : "HBASE_CLIENT" },
-             { "name" : "SLIDER "} ],
+          { "name": "NODEMANAGER" },
+          { "name": "DATANODE" },
+          { "name" : "ZOOKEEPER_CLIENT" },
+          { "name" : "PIG" },
+          { "name" : "OOZIE_CLIENT" },
+          { "name" : "HIVE_CLIENT" },
+          { "name" : "HDFS_CLIENT" },
+          { "name" : "YARN_CLIENT" },
+          { "name" : "HCAT" },
+          { "name" : "SLIDER" },
+          { "name" : "MAPREDUCE2_CLIENT" },
+          { "name" : "TEZ_CLIENT" },
+          { "name" : "SPARK_CLIENT" },
+          { "name" : "HBASE_CLIENT" }
+        ],
+       "name" : "slavenode",
        "cardinality" : "{{ groups['slave-nodes']|length }}"
      },
     {% endif -%}
@@ -70,10 +125,13 @@
         { "name" : "HIVE_METASTORE" },
         { "name" : "TEZ_CLIENT" },
         { "name" : "ZOOKEEPER_CLIENT" },
+        { "name" : "ACTIVITY_ANALYZER" },
+        { "name" : "ACTIVITY_EXPLORER" },
         { "name" : "HCAT" },
         { "name" : "PIG" },
         { "name" : "WEBHCAT_SERVER" },
         { "name" : "SECONDARY_NAMENODE" },
+        { "name" : "HST_SERVER" },
         { "name" : "HST_AGENT" },
         { "name" : "MAPREDUCE2_CLIENT" },
         { "name" : "SLIDER" },
@@ -89,12 +147,9 @@
     },
     {
       "components" : [
-        { "name" : "HST_SERVER" },
         { "name" : "HISTORYSERVER" },
         { "name" : "METRICS_MONITOR" },
         { "name" : "NAMENODE" },
-        { "name" : "ACTIVITY_ANALYZER" },
-        { "name" : "ACTIVITY_EXPLORER" },
         { "name" : "HST_AGENT" },
         { "name" : "MAPREDUCE2_CLIENT" },
         { "name" : "ZOOKEEPER_SERVER" },

@@ -1,5 +1,24 @@
 ---
 # tasks file for ambari-server
+- name: EPEL via yum
+  yum:
+    name: https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    state: present
+
+- name: yum install pip
+  yum: 
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - python2-pip
+    - python-devel
+
+- name: upgrade pip
+  pip:
+    name: pip
+    state: latest
+  tags: upgrade-pip
 
 - name: install pexpect via pip
   pip: name=pexpect

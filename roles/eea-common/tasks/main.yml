@@ -15,11 +15,11 @@
 - import_tasks: selinux.yml
   tags: selinux
 
-- import_tasks: limits.yml
-  tags: limits
-
 - import_tasks: ntp.yml
   tags: install_ntp
+
+- import_tasks: limits.yml
+  tags: limits
 
 - import_tasks: ssh-key.yml
   tags: ssh-key

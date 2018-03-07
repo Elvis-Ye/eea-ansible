@@ -9,10 +9,11 @@
   register: master_ssh_key
 
 - name: create public_keys directory if it does not existing.
-  file: 
-    path: public_keys
-    state: directory
-  connection: local
+  local_action: file path=public_keys state=directory
+#  file: 
+#    path: public_keys
+#    state: directory
+#  connection: local
 
 - name: Delete pub files if existing
   local_action:

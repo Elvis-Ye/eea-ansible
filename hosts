@@ -1,34 +1,37 @@
 [eea-all]
-10.2.0.8 hostname=eea-rh-1.azurelocal
-10.2.0.9 hostname=eea-rh-2.azurelocal
-10.2.0.10 hostname=eea-rh-3.azurelocal
-10.2.0.11 hostname=eea-rh-4.azurelocal
+10.2.0.12 hostname=roy-rh-1.azurelocal
+10.2.0.13 hostname=roy-rh-2.azurelocal
+10.2.0.14 hostname=roy-rh-3.azurelocal
+10.2.0.15 hostname=roy-rh-4.azurelocal
+10.2.0.16 hostname=roy-rh-5.azurelocal
 
 [ambari-node]
-eea-rh-1
-eea-rh-2
-eea-rh-3
-eea-rh-4
+roy-rh-1.azurelocal
+roy-rh-2.azurelocal
+roy-rh-3.azurelocal
+roy-rh-4.azurelocal
+roy-rh-5.azurelocal
 
 [ambari-server]
-eea-rh-1
+roy-rh-1
 
 [slave-nodes]
-eea-rh-4
+roy-rh-4.azurelocal
+roy-rh-5.azurelocal
 
-[postgresql_server]
-192.168.34.74
-
-[redis_server]
-192.168.34.76
-
-[nfs-server]
-eea-rh-1
-
-[nfs-client]
-192.168.34.78
-192.168.34.8
+#[postgresql_server]
+#192.168.34.74
+#
+#[redis_server]
+#192.168.34.76
+#
+#[nfs-server]
+#eea-rh-1
+#
+#[nfs-client]
+#192.168.34.78
+#192.168.34.8
 
 [all:vars]
-ansible_ssh_user=centos
+ansible_ssh_user=redhat
 ansible_ssh_private_key_file=/home/centos/.ssh/eea-hdp

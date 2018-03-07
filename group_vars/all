@@ -10,4 +10,4 @@
 #DNS_SERVER: 10.175.172.67
 LOCAL_REPO: roy-ansible
 yum_repo: roy-ansible
-cluster_name: EEAcentos
+cluster_name: EEAredhat
