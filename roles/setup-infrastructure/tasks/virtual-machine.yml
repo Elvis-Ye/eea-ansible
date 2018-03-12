@@ -2,7 +2,7 @@
 - name: Create Virtual Machine
   azure_rm_virtualmachine:
     resource_group: "{{ cloud_config.resource_group }}"
-    name: "{{ item }}{{ cloud_config.name_suffix|default('')"
+    name: "{{ item }}{{ cloud_config.name_suffix|default('')}}"
     image:
       offer:  "{{ image.offer }}"
       publisher: "{{ image.publisher }}"
@@ -18,5 +18,5 @@
       - lun: 0
         disk_size_gb: "{{ disks.disk_size }}"
         caching: "{{ disks.caching }}"
-        managed_disk_type: "{{ disks.Standard_LRS }}"
+        managed_disk_type: "{{ disks.disk_type }}"
   with_sequence: start=1 end="{{ vm_count }}" format="{{ cluster_name }}"-%02x

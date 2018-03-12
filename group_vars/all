@@ -1,7 +1,6 @@
 ---
 LOCAL_REPO: roy-ansible
 yum_repo: roy-ansible
-cluster_name: EEAredhat
 
 cluster_name: 'Roytestcluster'
 
