@@ -1,13 +1,36 @@
-#HTTP_PROXY: http://10.175.250.81:8080
-#HTTPS_PROXY: http://10.175.250.81:8080
-#FTP_PROXY: http://10.175.250.81:8080
-#NO_PROXY: ericsson.se,127.0.0.1,localhost,localnova,novalocal,192.168.34.77,147.128.68.27,169.144.135.53,192.168.34.80
-#ProxyHost: 10.175.250.81
-#ProxyPort: 8080
-#NTPSERVER: 10.175.250.66
-#NTPSERVER2: 10.175.250.67
-#GATEWAY: 192.168.34.125
-#DNS_SERVER: 10.175.172.67
+---
 LOCAL_REPO: roy-ansible
 yum_repo: roy-ansible
 cluster_name: EEAredhat
+
+cluster_name: 'Roytestcluster'
+
+cloud_config:
+  resource_group: RoyTesting
+  name_suffix: '.azurelocal'    # Set this to a domain name (like '.example.com') when using the Azure internal DNS otherwise the cluster won't use FQDN nodes
+  location: 'North Europe'
+  admin_username: redhat
+  ssh:
+    publickey: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCZ+5et45vvgNZF5WbsQe3LUYaW4Siym19lMgo7kytIdE3JNiwxAVxtPsnPrKjcpWisbhmryE1IM6CKEli0+vFrsHnq6BDSNid2p3+PUs1InCBgAqkzDn/GrkcsjohnfwR8dI+aBboz0TVnuT842BK9mXahGhgJTb+lkL10n9RMd13AdPRdjAI6rc/Hl3HE08i3PHJFgE/kBFcddX2vSZg4HPuxkHSXSHqhPqyckQOLgsn4n787XjMyqlhb0AsFZ+7CNfZhwzZkws356T377iBkPwhU0ozX8T3hZflefI7FZlcx5sXLot57n4ZMrIwYOkS2FqaC7RajdL6f895q+WRH centos@roy-ansible'
+  network:
+    name: "{{ cluster_name }}-network"
+    address: "10.10.0.0/16"
+  subnet:
+    name: "{{ cluster_name }}-subnet"
+    address: "10.10.0.0/24"
+  nsg: ambari-nsg
+  disks:
+    disk_size: 32
+    disk_type: Standard_LRS
+    caching: ReadWrite
+  vm_count: 3    
+  
+image:
+  offer: RHEL
+  publisher: RedHat
+  sku: '7.3'
+  version: latest
+flavor: Standard_D3_v2
+public_ip: true
+
+ambari_server: true

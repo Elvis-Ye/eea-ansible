@@ -1,0 +1,22 @@
+---
+- name: Create Virtual Machine
+  azure_rm_virtualmachine:
+    resource_group: "{{ cloud_config.resource_group }}"
+    name: "{{ item }}{{ cloud_config.name_suffix|default('')"
+    image:
+      offer:  "{{ image.offer }}"
+      publisher: "{{ image.publisher }}"
+      sku: "{{ image.sku }}"
+      version: "{{ image.version }}"
+    vm_size: "{{ flavor }}"
+    managed_disk_type: Standard_LRS
+    admin_username: "{{ cloud_config.admin_username }}"
+    ssh_public_keys:
+      - path: "/home/{{ cloud_config.admin_username }}/.ssh/authorized_keys"
+        key_data: "{{ cloud_config.ssh.publickey }}"
+    data_disks:
+      - lun: 0
+        disk_size_gb: "{{ disks.disk_size }}"
+        caching: "{{ disks.caching }}"
+        managed_disk_type: "{{ disks.Standard_LRS }}"
+  with_sequence: start=1 end="{{ vm_count }}" format="{{ cluster_name }}"-%02x
