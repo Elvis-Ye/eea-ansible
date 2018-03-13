@@ -1,7 +1,7 @@
 ---
-- name: Build {{ cloud_config.resource_group }} Resource Group
+- name: Build {{ resource_group }} Resource Group
   azure_rm_resourcegroup:
-    name: "{{ cloud_config.resource_group }}"
+    name: "{{ resource_group }}"
     location: "{{ cloud_config.location }}"
     state: present
     force: yes
@@ -9,20 +9,20 @@
 
 - name: Create virtual network
   azure_rm_virtualnetwork:
-    resource_group: "{{ cloud_config.resource_group }}"
+    resource_group: "{{ resource_group }}"
     name: "{{ cloud_config.network.name }}"
     address_prefixes: "{{ cloud_config.network.address }}"
 
 - name: Add {{ cloud_config.subnet.name }} subnet
   azure_rm_subnet:
-    resource_group: "{{ cloud_config.resource_group }}"
+    resource_group: "{{ resource_group }}"
     virtual_network_name: "{{ cloud_config.network.name }}"
     name: "{{ cloud_config.subnet.name }}"
     address_prefix: "{{ cloud_config.subnet.address }}"
 
 - name: Create security group that allows SSH and port 8080
   azure_rm_securitygroup:
-    resource_group: "{{ cloud_config.resource_group }}"
+    resource_group: "{{ resource_group }}"
     name: "{{ cloud_config.nsg }}"
     rules:
       - name: SSH

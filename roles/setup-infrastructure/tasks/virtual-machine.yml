@@ -1,7 +1,24 @@
 ---
+- name: Create Public IPs
+  azure_rm_publicipaddress:
+    resource_group: "{{ resource_group }}"
+    allocation_method: Static
+    name: "IP-{{ item }}"
+  with_sequence: start=1 end="{{ vm_count }}" format="{{ cluster_name }}-%02x"
+
+- name: Create NIC(s) 
+  azure_rm_networkinterface:
+    resource_group: "{{ resource_group }}"
+    name: "NIC-{{ item }}"
+    public_ip_address_name: "IP-{{ item }}"
+    virtual_network_name: "{{ cloud_config.network.name }}"
+    subnet_name: "{{ cloud_config.subnet.name }}"
+    security_group_name: "{{ cloud_config.nsg }}"
+  with_sequence: start=1 end="{{ vm_count }}" format="{{ cluster_name }}-%02x"
+
 - name: Create Virtual Machine
   azure_rm_virtualmachine:
-    resource_group: "{{ cloud_config.resource_group }}"
+    resource_group: "{{ resource_group }}"
     name: "{{ item }}{{ cloud_config.name_suffix|default('')}}"
     image:
       offer:  "{{ image.offer }}"
@@ -10,6 +27,8 @@
       version: "{{ image.version }}"
     vm_size: "{{ flavor }}"
     managed_disk_type: Standard_LRS
+    network_interface_names: "NIC-{{ item }}"
+    ssh_password_enabled: false
     admin_username: "{{ cloud_config.admin_username }}"
     ssh_public_keys:
       - path: "/home/{{ cloud_config.admin_username }}/.ssh/authorized_keys"
@@ -19,4 +38,8 @@
         disk_size_gb: "{{ disks.disk_size }}"
         caching: "{{ disks.caching }}"
         managed_disk_type: "{{ disks.disk_type }}"
-  with_sequence: start=1 end="{{ vm_count }}" format="{{ cluster_name }}"-%02x
+  with_sequence: start=1 end="{{ vm_count }}" format="{{ cluster_name }}-%02x"
+  register: vm_cluster
+
+- name: Display Virtual Machine info
+  debug: var=vm_cluster

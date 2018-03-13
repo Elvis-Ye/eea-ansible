@@ -2,10 +2,10 @@
 LOCAL_REPO: roy-ansible
 yum_repo: roy-ansible
 
-cluster_name: 'Roytestcluster'
+resource_group: RoyTesting
+cluster_name: 'roy-hdp'
 
 cloud_config:
-  resource_group: RoyTesting
   name_suffix: '.azurelocal'    # Set this to a domain name (like '.example.com') when using the Azure internal DNS otherwise the cluster won't use FQDN nodes
   location: 'North Europe'
   admin_username: redhat
@@ -32,4 +32,3 @@ image:
 flavor: Standard_D3_v2
 public_ip: true
 
-ambari_server: true
