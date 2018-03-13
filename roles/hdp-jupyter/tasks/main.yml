@@ -1,0 +1,7 @@
+- name: Include update-ambari-logo.yml
+  import_tasks: update-ambari-logo.yml
+  when: update_ambari_logo
+
+- name: Include install-jupyter.yml
+  import_tasks: install-jupyter.yml
+  when: install_jupyter

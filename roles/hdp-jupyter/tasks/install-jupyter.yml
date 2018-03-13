@@ -1,0 +1,125 @@
+- name: copy and unpack jupyer-service package
+  unarchive: src="http://{{ LOCAL_REPO }}/src/jupyter-service.tar.gz" dest={{stack_service_dir}} remote_src=yes
+  when: install_jupyter
+
+- name: restart ambari-server
+  command: service ambari-server restart
+
+- name: delete the service
+  uri: url=http://{{ ansible_nodename }}:8080/api/v1/clusters/{{ cluster_name }}/services/JUPYTER
+       method=DELETE
+       force_basic_auth=yes
+       user=admin
+       password=admin
+       HEADER_X-Requested-By="ambari"
+       status_code=200,201,202,404
+
+- name: add the service to the cluster
+  uri: url=http://{{ ansible_nodename }}:8080/api/v1/clusters/{{ cluster_name }}/services
+       method=POST
+       force_basic_auth=yes
+       user=admin
+       password=admin
+       HEADER_X-Requested-By="ambari"
+       body='{"ServiceInfo":{"service_name":"JUPYTER"}}'
+       body_format=raw
+       status_code=200,201,202,409
+
+- name: add the component to the service
+  uri: url=http://{{ ansible_nodename }}:8080/api/v1/clusters/{{ cluster_name }}/services/JUPYTER/components/PYTHON27_CLIENT
+       method=POST
+       force_basic_auth=yes
+       user=admin
+       password=admin
+       HEADER_X-Requested-By="ambari"
+       status_code=200,201,202,409
+       
+- name: add the component to the service
+  uri: url=http://{{ ansible_nodename }}:8080/api/v1/clusters/{{ cluster_name }}/services/JUPYTER/components/JUPYTER_MASTER
+       method=POST
+       force_basic_auth=yes
+       user=admin
+       password=admin
+       HEADER_X-Requested-By="ambari"
+       status_code=200,201,202,409
+
+- name: map the component with the host
+  uri: url=http://{{ ansible_nodename }}:8080/api/v1/clusters/{{ cluster_name }}/hosts/{{ ansible_nodename }}/host_components/PYTHON27_CLIENT
+       method=POST
+       force_basic_auth=yes
+       user=admin
+       password=admin
+       HEADER_X-Requested-By="ambari"
+       status_code=200,201,202,409
+
+- name: map the component with the host
+  uri: url=http://{{ ansible_nodename }}:8080/api/v1/clusters/{{ cluster_name }}/hosts/{{ ansible_nodename }}/host_components/JUPYTER_MASTER
+       method=POST
+       force_basic_auth=yes
+       user=admin
+       password=admin
+       HEADER_X-Requested-By="ambari"
+       status_code=200,201,202,409
+
+- name: create configuration
+  uri: url=http://{{ ansible_nodename }}:8080/api/v1/clusters/{{ cluster_name }}/configurations
+       method=POST
+       force_basic_auth=yes
+       user=admin
+       password=admin
+       HEADER_X-Requested-By="ambari"
+       body='{"type":"jupyter-env","tag":"INITIAL","properties":{"spark.home":"/usr/hdp/current/spark-client/","jupyter.user":"jupyter","jupyter.port":"9999","pid.file":"/var/run/jupyter/server.pid","log.dir":"/var/log/jupyter" }}'
+       body_format=raw
+       status_code=200,201,202,500
+
+- name: apply the configuration
+  uri: url=http://{{ ansible_nodename }}:8080/api/v1/clusters/{{ cluster_name }}
+       method=PUT
+       force_basic_auth=yes
+       user=admin
+       password=admin
+       HEADER_X-Requested-By="ambari"
+       body='{"Clusters":{"desired_configs":{"type":"jupyter-env","tag":"INITIAL"}}}'
+       body_format=raw
+       status_code=200,201,202
+
+- name: install the service
+  uri: url=http://{{ ansible_nodename }}:8080/api/v1/clusters/{{ cluster_name }}/services/JUPYTER
+       method=PUT
+       force_basic_auth=yes
+       user=admin
+       password=admin
+       HEADER_X-Requested-By="ambari"
+       body='{"ServiceInfo":{"state":"INSTALLED"}}'
+       body_format=raw
+       status_code=200,201,202
+
+- name: Wait for the service to be installed
+  uri: url=http://{{ ansible_nodename }}:8080/api/v1/clusters/{{ cluster_name }}/services/JUPYTER?fields=ServiceInfo/state
+       method=GET
+       force_basic_auth=yes
+       user=admin
+       password=admin
+       HEADER_Content-Type="application/json"
+       HEADER_X-Requested-By="ambari"
+       status_code=200,201,202
+       return_content=yes
+  register: service_install_task
+  until: ((service_install_task.content|from_json).ServiceInfo.state == 'INSTALLED' or
+         (service_install_task.content|from_json).ServiceInfo.state == 'INSTALL_FAILED' or
+         (service_install_task.content|from_json).ServiceInfo.state == 'STARTED')
+  retries: "{{ wait_timeout // 5 }}"
+  delay: 5
+  when: wait
+  
+- name: start the service
+  uri: url=http://{{ ansible_nodename }}:8080/api/v1/clusters/{{ cluster_name }}/services/JUPYTER
+       method=PUT
+       force_basic_auth=yes
+       user=admin
+       password=admin
+       HEADER_X-Requested-By="ambari"
+       body='{"ServiceInfo":{"state":"STARTED"}}'
+       body_format=raw
+       status_code=200,201,202
+  ignore_errors: true                

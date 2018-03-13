@@ -1,0 +1,7 @@
+---
+- name: Install jupyter service
+  hosts: jupyter
+  become: yes
+        
+  roles:
+    - hdp-jupyter

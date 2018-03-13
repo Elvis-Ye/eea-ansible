@@ -1,0 +1,3 @@
+- name: copy the Ericsson logo file
+  copy: src=logo-white.png.gz dest={{ambari_img_dir}}
+
