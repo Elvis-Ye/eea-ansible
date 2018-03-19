@@ -3,7 +3,7 @@ LOCAL_REPO: roy-ansible
 yum_repo: roy-ansible
 
 resource_group: RoyTesting
-cluster_name: 'roy-hdp'
+cluster_name: 'roy-tmp'
 vm_count: 3    
 
 cloud_config:
@@ -19,10 +19,12 @@ cloud_config:
     name: "{{ cluster_name }}-subnet"
     address: "10.10.0.0/24"
   nsg: ambari-nsg
-  
+
+
 disks:
   disk_size: 32
-  disk_type: Standard_LRS
+  hdfs_disk_size: 40
+  disk_type: Premium_LRS
   caching: ReadWrite
 
 

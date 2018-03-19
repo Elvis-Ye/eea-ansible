@@ -19,14 +19,15 @@
 - name: Create Virtual Machine
   azure_rm_virtualmachine:
     resource_group: "{{ resource_group }}"
-    name: "{{ item }}{{ cloud_config.name_suffix|default('')}}"
+    # name: "{{ item }}{{ cloud_config.name_suffix|default('')}}"
+    name: "{{ item }}"
     image:
       offer:  "{{ image.offer }}"
       publisher: "{{ image.publisher }}"
       sku: "{{ image.sku }}"
       version: "{{ image.version }}"
     vm_size: "{{ flavor }}"
-    managed_disk_type: Standard_LRS
+    managed_disk_type: "{{ disks.disk_type }}"
     network_interface_names: "NIC-{{ item }}"
     ssh_password_enabled: false
     admin_username: "{{ cloud_config.admin_username }}"
@@ -36,6 +37,11 @@
     data_disks:
       - lun: 0
         disk_size_gb: "{{ disks.disk_size }}"
+        caching: "{{ disks.caching }}"
+        managed_disk_type: "{{ disks.disk_type }}"
+    data_disks:
+      - lun: 1
+        disk_size_gb: "{{ disks.hdfs_disk_size }}"
         caching: "{{ disks.caching }}"
         managed_disk_type: "{{ disks.disk_type }}"
   with_sequence: start=1 end="{{ vm_count }}" format="{{ cluster_name }}-%02x"
